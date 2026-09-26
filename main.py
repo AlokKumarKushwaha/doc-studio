@@ -107,6 +107,12 @@ def get_sitemap_xml():
     return Response(content=xml_content, media_type="application/xml")
 
 
+@app.get("/google{code}.html", response_class=PlainTextResponse)
+def google_site_verification(code: str):
+    """Google Search Console HTML verification file handler"""
+    return f"google-site-verification: google{code}.html"
+
+
 # -------------------------------------------------------------
 # Database & Authentication Setup
 # -------------------------------------------------------------

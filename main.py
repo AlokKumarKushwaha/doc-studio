@@ -10,7 +10,7 @@ import secrets
 from datetime import datetime, timedelta
 from typing import List, Optional
 from fastapi import FastAPI, UploadFile, File, Form, HTTPException, Request
-from fastapi.responses import HTMLResponse, StreamingResponse, JSONResponse, FileResponse
+from fastapi.responses import HTMLResponse, StreamingResponse, JSONResponse, FileResponse, PlainTextResponse, Response
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -81,6 +81,30 @@ async def serve_home(request: Request):
 @app.get("/api/health")
 async def health_check():
     return {"status": "ok", "app": "DocStudio", "version": "1.0.0"}
+
+
+@app.get("/robots.txt", response_class=PlainTextResponse)
+def get_robots_txt():
+    """Search engine crawler rules for Googlebot, Bingbot, etc."""
+    return """User-agent: *
+Allow: /
+Sitemap: https://docstudio-dty3.onrender.com/sitemap.xml
+"""
+
+
+@app.get("/sitemap.xml")
+def get_sitemap_xml():
+    """XML Sitemap for Google Search indexing"""
+    xml_content = """<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://docstudio-dty3.onrender.com/</loc>
+    <lastmod>2026-09-26</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>"""
+    return Response(content=xml_content, media_type="application/xml")
 
 
 # -------------------------------------------------------------

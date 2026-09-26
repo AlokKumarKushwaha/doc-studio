@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DocStudio | All-in-One PDF & PPT Suite</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            900: '#312e81',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- PDF.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    </script>
+    <link rel="stylesheet" href="/static/css/style.css?v=15">
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col antialiased selection:bg-brand-500 selection:text-white">
+
+    <!-- Notice Bar (Exact Sejda style) -->
+    <div class="sejda-top-notice">
+        By continuing to use our services you agree to our updated terms & privacy policy.
+    </div>
+
+    <!-- Top Navigation Header (Exact Sejda Replica with Doc-studio) -->
+    <header class="sejda-header-nav sticky top-0 z-40 shadow-xs relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+            <div class="flex items-center justify-between h-full">
+                <!-- Left: Logo (Green Circle with D + Doc-studio) -->
+                <div class="flex items-center space-x-2.5 cursor-pointer" onclick="switchTab('dashboard')">
+                    <div class="sejda-logo-circle">D</div>
+                    <span class="text-2xl font-bold text-slate-800 tracking-tight">Doc-studio</span>
+                </div>
+
+                <!-- Center Navigation Tabs (Sejda Menu items) -->
+                <nav class="hidden md:flex items-center space-x-1">
+                    <button id="btn-all-tools-nav" onclick="toggleAllToolsMegaMenu()" class="sejda-nav-link flex items-center font-semibold text-slate-800">
+                        All Tools <i data-lucide="chevron-down" class="w-3.5 h-3.5 ml-1 opacity-70"></i>
+                    </button>
+                    <button onclick="openToolSection('compress')" class="sejda-nav-link">Compress</button>
+                    <button onclick="switchTab('pdf-editor')" class="sejda-nav-link active">Edit</button>
+                    <button onclick="openToolSection('fill-sign')" class="sejda-nav-link">Fill & Sign</button>
+                    <button onclick="openToolSection('merge')" class="sejda-nav-link">Merge</button>
+                    <button onclick="openToolSection('delete-pages')" class="sejda-nav-link">Delete Pages</button>
+                    <button onclick="openToolSection('crop')" class="sejda-nav-link">Crop</button>
+                    <button onclick="switchTab('ppt-editor')" class="sejda-nav-link text-emerald-600 font-semibold">PPT Studio</button>
+                    <button onclick="switchTab('converters')" class="sejda-nav-link text-indigo-600 font-semibold">Converters</button>
+                </nav>
+
+                <!-- Right Side Links -->
+                <div class="flex items-center space-x-4 text-sm font-medium text-slate-600">
+                    <span class="hover:text-slate-900 cursor-pointer hidden sm:inline">Pricing</span>
+                    <!-- Dynamic Auth Container -->
+                    <div id="nav-auth-container" class="relative">
+                        <button onclick="openAuthModal('login')" class="hover:text-slate-900 font-semibold cursor-pointer text-slate-700 hover:text-emerald-600 transition flex items-center">
+                            Log in
+                        </button>
+                    </div>
+                    <button class="p-1 hover:text-slate-900" title="Language"><i data-lucide="globe" class="w-4 h-4"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- All Tools Mega Menu Overlay (Exact Sejda Replica matching media_1790269243009.png) -->
+        <div id="all-tools-megamenu" class="sejda-megamenu-overlay hidden">
+            <!-- Close Button -->
+            <button onclick="toggleAllToolsMegaMenu(false)" class="absolute top-4 right-8 text-slate-400 hover:text-slate-700 p-2 rounded-lg hover:bg-slate-100 transition" title="Close Mega Menu">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+
+            <div class="sejda-megamenu-grid">
+                <!-- COL 1: RECENT -->
+                <div class="sejda-megamenu-col">
+                    <div class="sejda-megamenu-hdr">
+                        <span>RECENT</span>
+                        <i data-lucide="rotate-ccw" class="w-3 h-3"></i>
+                    </div>
+                    <button onclick="openToolSection('crop')" class="sejda-megamenu-item">
+                        <span class="tool-icon text-pink-500"><i data-lucide="crop" class="w-4 h-4"></i></span>
+                        <span>Crop</span>
+                    </button>
+                    <button onclick="openToolSection('delete-pages')" class="sejda-megamenu-item">
+                        <span class="tool-icon text-sky-500"><i data-lucide="trash-2" class="w-4 h-4"></i></span>
+                        <span>Delete Pages</span>
+                    </button>
+                    <button onclick="openToolSection('merge')" class="sejda-megamenu-item">
+                        <span class="tool-icon text-emerald-500"><i data-lucide="combine" class="w-4 h-4"></i></span>
+                        <span>Merge</span>
+                    </button>
+                    <button onclick="openToolSection('fill-sign')" class="sejda-megamenu-item">
+                        <span class="tool-icon text-blue-500"><i data-lucide="pen-tool" class="w-4 h-4"></i></span>
+                        <span>Fill & Sign</span>
+                    </button>
+                    <button onclick="openToolSection('compress')" class="sejda-megamenu-item">
+                        <span class="tool-icon text-cyan-500"><i data-lucide="minimize-2" class="w-4 h-4"></i></span>
+                        <span>Compress</span>
+                    </button>
+                    <button onclick="switchTab('pdf-editor')" class="sejda-megamenu-item">
+                        <span class="tool-icon text-blue-500"><i data-lucide="edit-3" class="w-4 h-4"></i></span>
+                        <span>Edit</span>
+                    </button>
+                    <button onclick="openToolSection('split')" class="sejda-megamenu-item">
+                        <span class="tool-icon text-lime-600"><i data-lucide="external-link" class="w-4 h-4"></i></span>
+                        <span>Extract Pages</span>
+                    </button>
+                </div>
+
+                <!-- COL 2: MERGE & SPLIT -->
+                <div class="sejda-megamenu-col">
+                    <div class="sejda-megamenu-section">
+                        <div class="sejda-megamenu-hdr">MERGE</div>
+                        <button onclick="openToolSection('alternate-mix')" class="sejda-megamenu-item">
+                            <span class="tool-icon text-emerald-600"><i data-lucide="shuffle" class="w-4 h-4"></i></span>
+                            <span>Alternate & Mix</span>
+                        </button>
+                        <button onclick="openToolSection('merge')" class="sejda-megamenu-item">
+                            <span class="tool-icon text-emerald-600"><i data-lucide="combine" class="w-4 h-4"></i></span>
+                            <span>Merge</span>
+                        </button>
+                        <button onclick="openToolSection('organize')" class="sejda-megamenu-item">
+                            <span class="tool-icon text-emerald-600"><i data-lucide="layout-grid" class="w-4 h-4"></i></span>
+                            <span>Organize</span>
+                        </button>
+                    </div>
+
+                    <div class="sejda-megamenu-section">
+                        <div class="sejda-megamenu-hdr">SPLIT</div>
+                        <button onclick="openToolSection('split')" class="sejda-megamenu-item">
+                            <span class="tool-icon text-lime-600"><i data-lucide="external-link" class="w-4 h-4"></i></span>
+                            <span>Extract Pages</span>
+                        </button>
+                        <button onclick="openToolSection('split-pages')" class="sejda-megamenu-item">
+                            <span class="tool-icon text-lime-600"><i data-lucide="copy" class="w-4 h-4"></i></span>
+                            <span>Split by pages</span>
+                        </button>
+                        <button onclick="openToolSection('split-bookmarks')" class="sejda-megamenu-item">
+                            <span class="tool-icon text-lime-600"><i data-lucide="bookmark" class="w-4 h-4"></i></span>
+                            <span>Split by bookmarks</span>
+                        </button>
+                        <button onclick="openToolSection('split-half')" class="sejda-megamenu-item">
+                            <span class="tool-icon text-lime-600"><i data-lucide="columns" class="w-4 h-4"></i></span>
+                            <span>Split in half</span>
+                        </button>
+                        <button onclick="openToolSection('split-size')" class="sejda-megamenu-item">
+                            <span class="tool-icon text-lime-600"><i data-lucide="pie-chart" class="w-4 h-4"></i></span>
+                            <span>Split by size</span>
+                        </button>
+                        <button onclick="openToolSection('split-text')" class="sejda-megamenu-item">
+                            <span class="tool-icon text-lime-600"><i data-lucide="type" class="w-4 h-4"></i></span>
+                            <span>Split by text</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- COL 3: EDIT & SIGN, COMPRESS, SECURITY -->
+                <div class="sejda-megamenu-col">
+                    <div class="sejda-megamenu-section">
+                        <div class="sejda-megamenu-hdr">EDIT & SIGN</div>
+                        <button onclick="switchTab('pdf-editor')" class="sejda-megamenu-item">
+                            <span class="tool-icon text-blue-500"><i data-lucide="edit-3" class="w-4 h-4"></i></span>
+                            <span>Edit</span>
+                        </button>
+                        <button onclick="openToolSection('fill-sign')" class="sejda-megamenu-item">
+                            <span class="tool-icon text-blue-500"><i data-lucide="user-check" class="w-4 h-4"></i></span>
+                            <span>Fill & Sign</span>
+                        </button>
+                        <button onclick="openToolSection('create-forms')" class="sejda-megamenu-item">
+                            <span class="tool-icon text-blue-500"><i data-lucide="form-input" class="w-4 h-4"></i></span>
+                            <span>Create Forms</span>
+                        </button>
+                        <button onclick="openToolSection('delete-pages')" class="sejda-megamenu-item">
+                            <span class="tool-icon text-blue-500"><i data-lucide="trash-2" class="w-4 h-4"></i></span>
+                            <span>Delete Pages</span>
+                        </button>
+                    </div>
+
+                    <div class="sejda-megamenu-section">
+                        <div class="sejda-megamenu-hdr">COMPRESS</div>
+                        <button onclick="openToolSection('compress')" class="sejda-megamenu-item">
+                            <span class="tool-icon text-cyan-500"><i data-lucide="minimize-2" class="w-4 h-4"></i></span>
+                            <span>Compress</span>
+                        </button>
+                    </div>
+
+                    <div class="sejda-megamenu-section">
+                        <div class="sejda-megamenu-hdr">SECURITY</div>
+                        <button onclick="openToolSection('protect')" class="sejda-megamenu-item">
+                            <span class="tool-icon text-sky-500"><i data-lucide="lock" class="w-4 h-4"></i></span>
+                            <span>Protect</span>
+                        </button>
+                        <button onclick="openToolSection('unlock')" class="sejda-megamenu-item">
+                            <span class="tool-icon text-sky-500"><i data-lucide="unlock" class="w-4 h-4"></i></span>
+                            <span>Unlock</span>
+                        </button>
+                        <button onclick="openToolSection('watermark')" class="sejda-megamenu-item">
+                            <span class="tool-icon text-sky-500"><i data-lucide="stamp" class="w-4 h-4"></i></span>
+                            <span>Watermark</span>
+                        </button>
+                        <button onclick="openToolSection('flatten')" class="sejda-megamenu-item">
+                            <span class="tool-icon text-sky-500"><i data-lucide="layers" class="w-4 h-4"></i></span>
+                            <span>Flatten</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- COL 4: CONVERT FROM PDF & CONVERT TO PDF -->
+                <div class="sejda-megamenu-col">
+                    <div class="sejda-megamenu-section">
+                        <div class="sejda-megamenu-hdr">CONVERT FROM PDF</div>
+                        <button onclick="openToolSection('pdf-to-excel')" class="sejda-megamenu-item">
+                            <span class="tool-icon text-orange-500"><i data-lucide="table" class="w-4 h-4"></i></span>
+                            <span>PDF to Excel</span>
+                        </button>
+                        <button onclick="openToolSection('pdf-to-jpg')" class="sejda-megamenu-item">
+                            <span class="tool-icon text-orange-500"><i data-lucide="image" class="w-4 h-4"></i></span>
+                            <span>PDF to JPG</span>
+                        </button>
+                        <button onclick="switchTab('converters', 'pdf-to-ppt')" class="sejda-megamenu-item">
+                            <span class="tool-icon text-orange-500"><i data-lucide="presentation" class="w-4 h-4"></i></span>
+                            <span>PDF to PowerPoint</span>
+                        </button>
+                        <button onclick="openToolSection('pdf-to-text')" class="sejda-megamenu-item">
+                            <span class="tool-icon text-orange-500"><i data-lucide="file-text" class="w-4 h-4"></i></span>
+                            <span>PDF to Text</span>
+                        </button>
+                        <button onclick="openToolSection('pdf-to-word')" class="sejda-megamenu-item">
+                            <span class="tool-icon text-orange-500"><i data-lucide="file-code" class="w-4 h-4"></i></span>
+                            <span>PDF to Word</span>
+                        </button>
+                    </div>
+
+                    <div class="sejda-megamenu-section">
+                        <div class="sejda-megamenu-hdr">CONVERT TO PDF</div>
+                        <button onclick="openToolSection('html-to-pdf')" class="sejda-megamenu-item">
+                            <span class="tool-icon text-purple-500"><i data-lucide="globe" class="w-4 h-4"></i></span>
+                            <span>HTML to PDF</span>
+                        </button>
+                        <button onclick="openToolSection('jpg-to-pdf')" class="sejda-megamenu-item">
+                            <span class="tool-icon text-purple-500"><i data-lucide="image" class="w-4 h-4"></i></span>
+                            <span>JPG to PDF</span>
+                        </button>
+                        <button onclick="openToolSection('word-to-pdf')" class="sejda-megamenu-item">
+                            <span class="tool-icon text-purple-500"><i data-lucide="file-text" class="w-4 h-4"></i></span>
+                            <span>Word to PDF</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- COL 5: OTHER (Part 1) -->
+                <div class="sejda-megamenu-col">
+                    <div class="sejda-megamenu-section">
+                        <div class="sejda-megamenu-hdr">OTHER</div>
+                        <button onclick="openToolSection('bates')" class="sejda-megamenu-item">
+                            <span class="tool-icon text-fuchsia-500"><i data-lucide="hash" class="w-4 h-4"></i></span>
+                            <span>Bates Numbering</span>
+                        </button>
+                        <button onclick="openToolSection('bookmarks')" class="sejda-megamenu-item">
+                            <span class="tool-icon text-fuchsia-500"><i data-lucide="bookmark" class="w-4 h-4"></i></span>
+                            <span>Create Bookmarks</span>
+                        </button>
+                        <button onclick="openToolSection('crop')" class="sejda-megamenu-item">
+                            <span class="tool-icon text-fuchsia-500"><i data-lucide="crop" class="w-4 h-4"></i></span>
+                            <span>Crop</span>
+                        </button>
+                        <button onclick="openToolSection('metadata')" class="sejda-megamenu-item">
+                            <span class="tool-icon text-fuchsia-500"><i data-lucide="info" class="w-4 h-4"></i></span>
+                            <span>Edit Metadata</span>
+                        </button>
+                        <button onclick="openToolSection('extract-images')" class="sejda-megamenu-item">
+                            <span class="tool-icon text-fuchsia-500"><i data-lucide="image" class="w-4 h-4"></i></span>
+                            <span>Extract Images</span>
+                        </button>
+                        <button onclick="openToolSection('flip')" class="sejda-megamenu-item">
+                            <span class="tool-icon text-fuchsia-500"><i data-lucide="flip-horizontal" class="w-4 h-4"></i></span>
+                            <span>Flip</span>
+                            <span class="sejda-badge-new">New</span>
+                        </button>
+                        <button onclick="openToolSection('grayscale')" class="sejda-megamenu-item">
+                            <span class="tool-icon text-fuchsia-500"><i data-lucide="moon" class="w-4 h-4"></i></span>
+                            <span>Grayscale</span>
+                        </button>
+                        <button onclick="openToolSection('header-footer')" class="sejda-megamenu-item">
+                            <span class="tool-icon text-fuchsia-500"><i data-lucide="align-center" class="w-4 h-4"></i></span>
+                            <span>Header & Footer</span>
+                        </button>
+                        <button onclick="openToolSection('n-up')" class="sejda-megamenu-item">
+                            <span class="tool-icon text-fuchsia-500"><i data-lucide="grid" class="w-4 h-4"></i></span>
+                            <span>N-up</span>
+                        </button>
+                        <button onclick="openToolSection('page-numbers')" class="sejda-megamenu-item">
+                            <span class="tool-icon text-fuchsia-500"><i data-lucide="list-ordered" class="w-4 h-4"></i></span>
+                            <span>Page Numbers</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- COL 6: OTHER (Part 2), SCANS, AUTOMATE -->
+                <div class="sejda-megamenu-col">
+                    <div class="sejda-megamenu-section">
+                        <button onclick="openToolSection('rename')" class="sejda-megamenu-item">
+                            <span class="tool-icon text-pink-500"><i data-lucide="edit-2" class="w-4 h-4"></i></span>
+                            <span>Rename</span>
+                        </button>
+                        <button onclick="openToolSection('repair')" class="sejda-megamenu-item">
+                            <span class="tool-icon text-pink-500"><i data-lucide="wrench" class="w-4 h-4"></i></span>
+                            <span>Repair</span>
+                        </button>
+                        <button onclick="openToolSection('resize')" class="sejda-megamenu-item">
+                            <span class="tool-icon text-pink-500"><i data-lucide="maximize-2" class="w-4 h-4"></i></span>
+                            <span>Resize</span>
+                        </button>
+                        <button onclick="openToolSection('rotate')" class="sejda-megamenu-item">
+                            <span class="tool-icon text-pink-500"><i data-lucide="rotate-cw" class="w-4 h-4"></i></span>
+                            <span>Rotate</span>
+                        </button>
+                        <button onclick="openToolSection('remove-annotations')" class="sejda-megamenu-item">
+                            <span class="tool-icon text-pink-500"><i data-lucide="eraser" class="w-4 h-4"></i></span>
+                            <span>Remove annotations</span>
+                            <span class="sejda-badge-new">New</span>
+                        </button>
+                    </div>
+
+                    <div class="sejda-megamenu-section">
+                        <div class="sejda-megamenu-hdr">SCANS</div>
+                        <button onclick="openToolSection('deskew')" class="sejda-megamenu-item">
+                            <span class="tool-icon text-rose-500"><i data-lucide="compass" class="w-4 h-4"></i></span>
+                            <span>Deskew</span>
+                        </button>
+                        <button onclick="openToolSection('ocr')" class="sejda-megamenu-item">
+                            <span class="tool-icon text-rose-500"><i data-lucide="scan-text" class="w-4 h-4"></i></span>
+                            <span>OCR</span>
+                        </button>
+                    </div>
+
+                    <div class="sejda-megamenu-section">
+                        <div class="sejda-megamenu-hdr">AUTOMATE</div>
+                        <button onclick="openToolSection('workflows')" class="sejda-megamenu-item">
+                            <span class="tool-icon text-slate-700"><i data-lucide="workflow" class="w-4 h-4"></i></span>
+                            <span>Workflows</span>
+                            <span class="sejda-badge-new">New</span>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+    <!-- Global Toast Alert Container -->
+    <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col space-y-2 pointer-events-none"></div>
+
+    <!-- Main Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- ==================================================================== -->
+        <!-- TAB 1: DASHBOARD OVERVIEW -->
+        <!-- ==================================================================== -->
+        <section id="tab-dashboard" class="tab-pane active space-y-10">
+            <!-- Hero Header -->
+            <div class="text-center max-w-3xl mx-auto pt-4 space-y-4">
+                <span class="text-xs font-bold uppercase tracking-wider text-brand-600 bg-brand-50 px-3 py-1 rounded-full border border-brand-100">
+                    Next-Gen Document Workspace
+                </span>
+                <h1 class="text-4xl sm:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight">
+                    Edit, Convert & Create <span class="bg-clip-text text-transparent bg-gradient-to-r from-brand-600 to-indigo-500">PDFs and Presentations</span>
+                </h1>
+                <p class="text-base sm:text-lg text-slate-600">
+                    A complete suite for PDF editing, PPT presentation designing, and bidirectional format conversion. Zero complicated setup, ready for GitHub and Render.
+                </p>
+            </div>
+
+            <!-- Feature Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-4">
+                
+                <!-- Card 1: PDF to PPT -->
+                <div onclick="switchTab('converters', 'pdf-to-ppt')" class="group bg-white p-6 rounded-2xl border border-slate-200 shadow-xs hover:shadow-xl hover:border-brand-500/40 transition-all duration-300 cursor-pointer relative overflow-hidden">
+                    <div class="w-12 h-12 rounded-xl bg-indigo-50 text-brand-600 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-brand-600 group-hover:text-white transition-all">
+                        <i data-lucide="file-type-2" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-1">PDF to PPT Converter</h3>
+                    <p class="text-sm text-slate-500 mb-4">Turn PDF documents into editable PowerPoint (.pptx) slides automatically.</p>
+                    <div class="flex items-center text-sm font-semibold text-brand-600 group-hover:translate-x-1 transition-transform">
+                        Launch Converter <i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i>
+                    </div>
+                </div>
+
+                <!-- Card 2: PPT to PDF -->
+                <div onclick="switchTab('converters', 'ppt-to-pdf')" class="group bg-white p-6 rounded-2xl border border-slate-200 shadow-xs hover:shadow-xl hover:border-orange-500/40 transition-all duration-300 cursor-pointer relative overflow-hidden">
+                    <div class="w-12 h-12 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-orange-600 group-hover:text-white transition-all">
+                        <i data-lucide="file-output" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-1">PPT to PDF Converter</h3>
+                    <p class="text-sm text-slate-500 mb-4">Export PowerPoint presentations into high-resolution, universal PDF documents.</p>
+                    <div class="flex items-center text-sm font-semibold text-orange-600 group-hover:translate-x-1 transition-transform">
+                        Launch Converter <i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i>
+                    </div>
+                </div>
+
+                <!-- Card 3: PDF Editor -->
+                <div onclick="switchTab('pdf-editor')" class="group bg-white p-6 rounded-2xl border border-slate-200 shadow-xs hover:shadow-xl hover:border-blue-500/40 transition-all duration-300 cursor-pointer relative overflow-hidden">
+                    <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white transition-all">
+                        <i data-lucide="pen-tool" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-1">PDF Editor & Sign</h3>
+                    <p class="text-sm text-slate-500 mb-4">Annotate, highlight, add text overlays, and draw digital signatures directly on PDF pages.</p>
+                    <div class="flex items-center text-sm font-semibold text-blue-600 group-hover:translate-x-1 transition-transform">
+                        Open PDF Editor <i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i>
+                    </div>
+                </div>
+
+                <!-- Card 4: PPT Slide Studio -->
+                <div onclick="switchTab('ppt-editor')" class="group bg-white p-6 rounded-2xl border border-slate-200 shadow-xs hover:shadow-xl hover:border-emerald-500/40 transition-all duration-300 cursor-pointer relative overflow-hidden">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-emerald-600 group-hover:text-white transition-all">
+                        <i data-lucide="presentation" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-1">PPT Slide Studio</h3>
+                    <p class="text-sm text-slate-500 mb-4">Build beautiful presentation slides visually in your browser and export as real .pptx.</p>
+                    <div class="flex items-center text-sm font-semibold text-emerald-600 group-hover:translate-x-1 transition-transform">
+                        Open PPT Studio <i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i>
+                    </div>
+                </div>
+
+                <!-- Card 5: Merge & Split PDF -->
+                <div onclick="switchTab('pdf-tools')" class="group bg-white p-6 rounded-2xl border border-slate-200 shadow-xs hover:shadow-xl hover:border-violet-500/40 transition-all duration-300 cursor-pointer relative overflow-hidden">
+                    <div class="w-12 h-12 rounded-xl bg-violet-50 text-violet-600 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-violet-600 group-hover:text-white transition-all">
+                        <i data-lucide="combine" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-1">Merge & Split PDF</h3>
+                    <p class="text-sm text-slate-500 mb-4">Combine multiple PDFs into one or extract individual pages and ranges cleanly.</p>
+                    <div class="flex items-center text-sm font-semibold text-violet-600 group-hover:translate-x-1 transition-transform">
+                        Explore Utilities <i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i>
+                    </div>
+                </div>
+
+                <!-- Card 6: Image to PDF & Watermark -->
+                <div onclick="switchTab('pdf-tools')" class="group bg-white p-6 rounded-2xl border border-slate-200 shadow-xs hover:shadow-xl hover:border-pink-500/40 transition-all duration-300 cursor-pointer relative overflow-hidden">
+                    <div class="w-12 h-12 rounded-xl bg-pink-50 text-pink-600 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-pink-600 group-hover:text-white transition-all">
+                        <i data-lucide="stamp" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-1">Images to PDF & Watermark</h3>
+                    <p class="text-sm text-slate-500 mb-4">Convert JPG/PNG galleries into PDF albums or stamp confidentiality watermarks.</p>
+                    <div class="flex items-center text-sm font-semibold text-pink-600 group-hover:translate-x-1 transition-transform">
+                        Use Tools <i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ==================================================================== -->
+        <!-- TAB 2: PDF EDITOR & VIEWER (EXACT SEJDA REPLICA) -->
+        <!-- ==================================================================== -->
+        <section id="tab-pdf-editor" class="tab-pane hidden space-y-4">
+            <!-- Hidden file input -->
+            <input type="file" id="pdf-upload-input" accept=".pdf" class="hidden">
+
+            <!-- Hero Title (Exact Sejda Header) -->
+            <div class="text-center pt-2 pb-1">
+                <h1 class="text-3xl font-extrabold text-slate-800 tracking-tight flex items-center justify-center gap-2">
+                    Online PDF editor <span class="text-[10px] uppercase font-bold text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded tracking-wider border border-slate-200">BETA</span>
+                </h1>
+                <p class="text-sm text-slate-500 mt-1 font-medium">
+                    Edit PDF files for free. Fill & sign PDF
+                </p>
+            </div>
+
+            <!-- PDF Editor Empty State -->
+            <div id="pdf-empty-state" class="bg-white border-2 border-dashed border-slate-300 rounded-xl p-12 text-center max-w-xl mx-auto my-4 space-y-4 shadow-xs">
+                <div class="w-16 h-16 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto shadow-inner">
+                    <i data-lucide="file-up" class="w-8 h-8"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-slate-800">Upload PDF file</h3>
+                    <p class="text-sm text-slate-500 mt-1">Files stay secure and private. Click on any line to edit or delete, or add images.</p>
+                </div>
+                <label for="pdf-upload-input" class="cursor-pointer inline-flex items-center px-8 py-3 text-base font-bold rounded-md bg-emerald-600 hover:bg-emerald-700 text-white shadow-md hover:shadow-lg transition">
+                    <i data-lucide="upload" class="w-5 h-5 mr-2"></i> Upload PDF file
+                </label>
+                <p class="text-xs text-slate-400">or drop PDF here</p>
+            </div>
+
+            <!-- PDF Active Workspace -->
+            <div id="pdf-workspace" class="hidden space-y-3">
+                <!-- Floating Segmented Blue Bar (Exact Sejda Toolbar) -->
+                <div class="sejda-toolbar-wrapper">
+                    <div class="sejda-segmented-bar">
+                        <!-- Text -->
+                        <button id="tool-text" class="sejda-bar-btn active" title="Click on text to edit line-by-line, or add new text">
+                            <span class="mr-1.5 font-serif font-bold text-base leading-none">I<span class="text-xs font-sans">A</span></span>
+                            <span>Text</span>
+                            <i data-lucide="chevron-down" class="w-3 h-3 ml-1.5 opacity-60"></i>
+                        </button>
+                        <!-- Links -->
+                        <button id="tool-links" class="sejda-bar-btn" title="Links">
+                            <i data-lucide="link" class="w-3.5 h-3.5 mr-1.5"></i>
+                            <span>Links</span>
+                        </button>
+                        <!-- Forms Dropdown Wrapper -->
+                        <div class="relative inline-flex">
+                            <button id="tool-forms" class="sejda-bar-btn" title="Forms">
+                                <i data-lucide="file-text" class="w-3.5 h-3.5 mr-1.5"></i>
+                                <span>Forms</span>
+                                <i data-lucide="chevron-down" class="w-3 h-3 ml-1.5 opacity-60"></i>
+                            </button>
+                            <!-- Forms Dropdown Menu (Exact Sejda Replica) -->
+                            <div id="sejda-forms-dropdown" class="sejda-forms-dropdown-menu hidden">
+                                <!-- Section 1: ADD TEXT AND SYMBOLS -->
+                                <div class="sejda-form-section-hdr">ADD TEXT AND SYMBOLS</div>
+                                <div class="sejda-symbol-row">
+                                    <button class="sejda-symbol-btn" id="sbtn-text" title="Text Tool">
+                                        <span class="font-serif font-bold text-lg leading-none">I<span class="text-xs font-sans">A</span></span>
+                                    </button>
+                                    <button class="sejda-symbol-btn" id="sbtn-cross" title="Cross mark (✕)">
+                                        <span class="text-lg font-bold">✕</span>
+                                    </button>
+                                    <button class="sejda-symbol-btn" id="sbtn-check" title="Check mark (✓)">
+                                        <span class="text-lg font-bold">✓</span>
+                                    </button>
+                                    <button class="sejda-symbol-btn" id="sbtn-dot" title="Dot symbol (●)">
+                                        <span class="text-base font-bold">●</span>
+                                    </button>
+                                </div>
+
+                                <!-- Section 2: ADD NEW FORM FIELDS -->
+                                <div class="sejda-form-section-hdr">ADD NEW FORM FIELDS</div>
+                                <div class="sejda-fields-grid">
+                                    <!-- Col 1 -->
+                                    <div class="space-y-1">
+                                        <button class="sejda-field-item-btn" id="sbtn-field-text" data-type="text">
+                                            <span class="sejda-field-icon">|T|</span>
+                                            <span>Text</span>
+                                        </button>
+                                        <button class="sejda-field-item-btn" id="sbtn-field-multiline" data-type="multiline">
+                                            <span class="sejda-field-icon">|T|≡</span>
+                                            <span>Text multiline</span>
+                                        </button>
+                                        <button class="sejda-field-item-btn" id="sbtn-field-dropdown" data-type="dropdown">
+                                            <span class="sejda-field-icon">▾</span>
+                                            <span>Drop-down list</span>
+                                        </button>
+                                        <button class="sejda-field-item-btn text-indigo-600" id="sbtn-field-detect">
+                                            <i data-lucide="sparkles" class="w-3.5 h-3.5 mr-1.5"></i>
+                                            <span>Detect fields</span>
+                                        </button>
+                                    </div>
+                                    <!-- Col 2 -->
+                                    <div class="space-y-1">
+                                        <button class="sejda-field-item-btn" id="sbtn-field-radio" data-type="radio">
+                                            <span class="sejda-field-icon">◉</span>
+                                            <span>Radio button</span>
+                                        </button>
+                                        <button class="sejda-field-item-btn" id="sbtn-field-checkbox" data-type="checkbox">
+                                            <span class="sejda-field-icon">☑</span>
+                                            <span>Checkbox</span>
+                                        </button>
+                                        <button class="sejda-field-item-btn" id="sbtn-field-signature" data-type="signature">
+                                            <i data-lucide="pen-tool" class="w-3.5 h-3.5 mr-1.5"></i>
+                                            <span>Signature box</span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Section 3: CHANGE EXISTING FORM FIELDS -->
+                                <div class="sejda-form-section-hdr">CHANGE EXISTING FORM FIELDS</div>
+                                <div class="space-y-1 px-1">
+                                    <button class="sejda-field-action-btn" id="sbtn-edit-mode">
+                                        <i data-lucide="toggle-left" class="w-4 h-4 mr-2 text-slate-500" id="sbtn-edit-mode-icon"></i>
+                                        <span>Form Edit mode</span>
+                                        <span class="ml-auto text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-600" id="sbtn-edit-mode-badge">OFF</span>
+                                    </button>
+                                    <button class="sejda-field-action-btn" id="sbtn-tab-order">
+                                        <i data-lucide="arrow-up-down" class="w-4 h-4 mr-2 text-slate-500"></i>
+                                        <span>Change tab order</span>
+                                    </button>
+                                </div>
+
+                                <!-- Section 4: SHARE PUBLICLY WITH OTHERS -->
+                                <div class="sejda-form-section-hdr">SHARE PUBLICLY WITH OTHERS</div>
+                                <div class="px-1">
+                                    <button class="sejda-field-action-btn" id="sbtn-publish">
+                                        <i data-lucide="users" class="w-4 h-4 mr-2 text-slate-500"></i>
+                                        <span>Publish for others to fill & sign</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Images -->
+                        <button id="tool-image-btn" class="sejda-bar-btn" title="Add photo to this page">
+                            <i data-lucide="image" class="w-3.5 h-3.5 mr-1.5"></i>
+                            <span>Images</span>
+                            <i data-lucide="chevron-down" class="w-3.5 h-3.5 ml-1.5 opacity-60"></i>
+                        </button>
+                        <input type="file" id="pdf-image-upload" accept="image/*" class="hidden">
+                        <!-- Sign -->
+                        <button id="tool-sign" class="sejda-bar-btn" title="Sign PDF">
+                            <i data-lucide="pen-tool" class="w-3.5 h-3.5 mr-1.5"></i>
+                            <span>Sign</span>
+                            <i data-lucide="chevron-down" class="w-3 h-3 ml-1.5 opacity-60"></i>
+                        </button>
+                        <!-- Whiteout -->
+                        <button id="tool-whiteout" class="sejda-bar-btn" title="Whiteout / Erase area or text">
+                            <i data-lucide="square" class="w-3.5 h-3.5 mr-1.5"></i>
+                            <span>Whiteout</span>
+                        </button>
+                        <!-- Annotate Dropdown Wrapper -->
+                        <div class="relative inline-flex">
+                            <button id="tool-annotate" class="sejda-bar-btn" title="Annotate & Highlight">
+                                <i data-lucide="edit-2" class="w-3.5 h-3.5 mr-1.5"></i>
+                                <span>Annotate</span>
+                                <i data-lucide="chevron-down" class="w-3 h-3 ml-1.5 opacity-60"></i>
+                            </button>
+                            <div id="sejda-annotate-dropdown" class="sejda-annotate-dropdown-menu hidden">
+                                <!-- Top action: Show annotations -->
+                                <button id="abtn-toggle-show" class="sejda-annotate-action-item">
+                                    <i data-lucide="eye" class="w-4 h-4 mr-2 text-slate-500" id="abtn-eye-icon"></i>
+                                    <span>Show annotations</span>
+                                </button>
+
+                                <!-- Section: TEXT -->
+                                <div class="sejda-form-section-hdr">TEXT</div>
+                                <div class="space-y-2 px-3 py-2">
+                                    <!-- Strike out -->
+                                    <div class="flex items-center justify-between">
+                                        <button class="sejda-annotate-row-btn" id="abtn-strikeout-label">
+                                            <span class="font-serif font-bold text-xs line-through mr-1.5">S</span>
+                                            <span>Strike out</span>
+                                        </button>
+                                        <div class="flex items-center space-x-1.5">
+                                            <button class="sejda-color-dot" style="background:#ef4444" data-type="strikeout" data-color="#ef4444" title="Red Strike out"></button>
+                                            <button class="sejda-color-dot" style="background:#eab308" data-type="strikeout" data-color="#eab308" title="Yellow Strike out"></button>
+                                            <button class="sejda-color-dot" style="background:#22c55e" data-type="strikeout" data-color="#22c55e" title="Green Strike out"></button>
+                                            <button class="sejda-color-dot" style="background:#06b6d4" data-type="strikeout" data-color="#06b6d4" title="Cyan Strike out"></button>
+                                            <button class="sejda-color-dot" style="background:#0f172a" data-type="strikeout" data-color="#0f172a" title="Dark Strike out"></button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Highlight (Text) -->
+                                    <div class="flex items-center justify-between">
+                                        <button class="sejda-annotate-row-btn" id="abtn-highlight-label">
+                                            <i data-lucide="edit-3" class="w-3.5 h-3.5 mr-1.5 text-slate-600"></i>
+                                            <span>Highlight</span>
+                                        </button>
+                                        <div class="flex items-center space-x-1.5">
+                                            <button class="sejda-color-dot" style="background:#ef4444" data-type="texthighlight" data-color="#ef4444" title="Red Highlight"></button>
+                                            <button class="sejda-color-dot" style="background:#eab308" data-type="texthighlight" data-color="#eab308" title="Yellow Highlight"></button>
+                                            <button class="sejda-color-dot" style="background:#22c55e" data-type="texthighlight" data-color="#22c55e" title="Green Highlight"></button>
+                                            <button class="sejda-color-dot" style="background:#06b6d4" data-type="texthighlight" data-color="#06b6d4" title="Cyan Highlight"></button>
+                                            <button class="sejda-color-dot" style="background:#0f172a" data-type="texthighlight" data-color="#0f172a" title="Dark Highlight"></button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Underline -->
+                                    <div class="flex items-center justify-between">
+                                        <button class="sejda-annotate-row-btn" id="abtn-underline-label">
+                                            <span class="font-serif font-bold text-xs underline mr-1.5">U</span>
+                                            <span>Underline</span>
+                                        </button>
+                                        <div class="flex items-center space-x-1.5">
+                                            <button class="sejda-color-dot" style="background:#ef4444" data-type="underline" data-color="#ef4444" title="Red Underline"></button>
+                                            <button class="sejda-color-dot" style="background:#eab308" data-type="underline" data-color="#eab308" title="Yellow Underline"></button>
+                                            <button class="sejda-color-dot" style="background:#22c55e" data-type="underline" data-color="#22c55e" title="Green Underline"></button>
+                                            <button class="sejda-color-dot" style="background:#06b6d4" data-type="underline" data-color="#06b6d4" title="Cyan Underline"></button>
+                                            <button class="sejda-color-dot" style="background:#0f172a" data-type="underline" data-color="#0f172a" title="Dark Underline"></button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Section: FREEHAND -->
+                                <div class="sejda-form-section-hdr">FREEHAND</div>
+                                <div class="space-y-2 px-3 py-2">
+                                    <!-- Freehand Highlight -->
+                                    <div class="flex items-center justify-between">
+                                        <button class="sejda-annotate-row-btn" id="abtn-freehand-highlighter">
+                                            <i data-lucide="highlighter" class="w-3.5 h-3.5 mr-1.5 text-slate-600"></i>
+                                            <span>Highlight</span>
+                                        </button>
+                                        <div class="flex items-center space-x-1.5">
+                                            <button class="sejda-color-dot" style="background:#ef4444" data-type="freehandhighlight" data-color="#ef4444" title="Red Freehand Highlight"></button>
+                                            <button class="sejda-color-dot" style="background:#eab308" data-type="freehandhighlight" data-color="#eab308" title="Yellow Freehand Highlight"></button>
+                                            <button class="sejda-color-dot" style="background:#22c55e" data-type="freehandhighlight" data-color="#22c55e" title="Green Freehand Highlight"></button>
+                                            <button class="sejda-color-dot" style="background:#06b6d4" data-type="freehandhighlight" data-color="#06b6d4" title="Cyan Freehand Highlight"></button>
+                                            <button class="sejda-color-dot" style="background:#0f172a" data-type="freehandhighlight" data-color="#0f172a" title="Dark Freehand Highlight"></button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Freehand Draw -->
+                                    <div class="flex items-center justify-between">
+                                        <button class="sejda-annotate-row-btn" id="abtn-freehand-draw">
+                                            <i data-lucide="edit-2" class="w-3.5 h-3.5 mr-1.5 text-slate-600"></i>
+                                            <span>Draw</span>
+                                        </button>
+                                        <div class="flex items-center space-x-1.5">
+                                            <button class="sejda-color-dot" style="background:#ef4444" data-type="freehanddraw" data-color="#ef4444" title="Red Draw"></button>
+                                            <button class="sejda-color-dot" style="background:#eab308" data-type="freehanddraw" data-color="#eab308" title="Yellow Draw"></button>
+                                            <button class="sejda-color-dot" style="background:#22c55e" data-type="freehanddraw" data-color="#22c55e" title="Green Draw"></button>
+                                            <button class="sejda-color-dot" style="background:#06b6d4" data-type="freehanddraw" data-color="#06b6d4" title="Cyan Draw"></button>
+                                            <button class="sejda-color-dot" style="background:#0f172a" data-type="freehanddraw" data-color="#0f172a" title="Dark Draw"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Shapes Dropdown Wrapper -->
+                        <div class="relative inline-flex">
+                            <button id="tool-shapes" class="sejda-bar-btn" title="Shapes">
+                                <i data-lucide="shapes" class="w-3.5 h-3.5 mr-1.5"></i>
+                                <span>Shapes</span>
+                                <i data-lucide="chevron-down" class="w-3 h-3 ml-1.5 opacity-60"></i>
+                            </button>
+                            <div id="sejda-shapes-dropdown" class="sejda-shapes-dropdown-menu hidden">
+                                <button class="sejda-shape-item-btn" data-shape="ellipse">
+                                    <span class="w-4 h-4 rounded-full border-2 border-slate-700 mr-2.5 inline-block"></span>
+                                    <span>Ellipse</span>
+                                </button>
+                                <button class="sejda-shape-item-btn" data-shape="rectangle">
+                                    <span class="w-4 h-3.5 border-2 border-slate-700 mr-2.5 inline-block"></span>
+                                    <span>Rectangle</span>
+                                </button>
+                                <button class="sejda-shape-item-btn" data-shape="line">
+                                    <span class="w-4 h-0.5 bg-slate-700 -rotate-45 mr-2.5 inline-block"></span>
+                                    <span>Line</span>
+                                </button>
+                                <button class="sejda-shape-item-btn" data-shape="arrow">
+                                    <i data-lucide="arrow-up-right" class="w-4 h-4 mr-2.5 text-slate-700"></i>
+                                    <span>Arrow</span>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Undo -->
+                        <button id="tool-undo" class="sejda-bar-btn" title="Undo last action">
+                            <i data-lucide="undo-2" class="w-3.5 h-3.5 mr-1.5"></i>
+                            <span>Undo</span>
+                        </button>
+                    </div>
+
+                    <!-- Layout Grid icon on far right -->
+                    <button class="ml-2 border border-[#38bdf8] bg-white p-2 rounded text-sky-600 hover:bg-sky-50 shadow-xs" title="Grid Page Overview">
+                        <i data-lucide="layout-grid" class="w-4 h-4"></i>
+                    </button>
+                </div>
+
+                <!-- Page Control Sub-Bar -->
+                <div class="sejda-page-box">
+                    <!-- Page number -->
+                    <span class="sejda-page-num-pill" id="pdf-current-page">1</span>
+
+                    <!-- Page Action Group -->
+                    <div class="sejda-action-pill-group">
+                        <button id="btn-delete-page" class="sejda-pill-action" title="Delete current page">
+                            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                        </button>
+                        <button id="btn-zoom-in" class="sejda-pill-action" title="Zoom in">
+                            <i data-lucide="zoom-in" class="w-3.5 h-3.5"></i>
+                        </button>
+                        <button id="btn-zoom-out" class="sejda-pill-action" title="Zoom out">
+                            <i data-lucide="zoom-out" class="w-3.5 h-3.5"></i>
+                        </button>
+                        <button id="btn-rotate-left" class="sejda-pill-action" title="Rotate left">
+                            <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                        </button>
+                        <button id="btn-rotate-right" class="sejda-pill-action" title="Rotate right">
+                            <i data-lucide="rotate-cw" class="w-3.5 h-3.5"></i>
+                        </button>
+                    </div>
+
+                    <!-- Insert Page Button -->
+                    <button id="btn-insert-page" class="sejda-insert-btn" title="Insert page here">
+                        <i data-lucide="plus-circle" class="w-3.5 h-3.5 mr-1.5"></i>
+                        <span>Insert page here</span>
+                    </button>
+
+                    <!-- Page Nav Chevrons -->
+                    <div class="flex items-center space-x-1 ml-2 text-xs font-semibold text-sky-700">
+                        <button id="btn-prev-page" class="p-1 rounded hover:bg-sky-100" title="Previous Page"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
+                        <span class="px-1 text-slate-500 font-normal">of <strong id="pdf-total-pages" class="text-slate-800 font-semibold">1</strong></span>
+                        <button id="btn-next-page" class="p-1 rounded hover:bg-sky-100" title="Next Page"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+                    </div>
+                </div>
+
+                <!-- Document Canvas Container -->
+                <div class="relative bg-[#eceff1] rounded-lg p-6 flex flex-col items-center justify-center overflow-auto min-h-[620px] shadow-inner">
+                    <div id="pdf-canvas-container" class="relative shadow-xl rounded-none bg-white overflow-hidden select-none border border-slate-300">
+                        <canvas id="pdf-render-canvas" class="block"></canvas>
+                        <div id="pdf-interactive-layer" class="absolute top-0 left-0 w-full h-full pointer-events-auto"></div>
+                        <canvas id="pdf-draw-canvas" class="absolute top-0 left-0 pointer-events-none"></canvas>
+                    </div>
+
+                    <!-- Big Green Sejda Apply Changes Button -->
+                    <div class="sticky bottom-6 mt-8 mb-2 z-30">
+                        <button id="btn-apply-changes" class="sejda-apply-btn">
+                            <span>Apply changes</span>
+                            <i data-lucide="chevron-right" class="w-5 h-5 ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================================================================== -->
+        <!-- TAB 3: PPT SLIDE STUDIO -->
+        <!-- ==================================================================== -->
+        <section id="tab-ppt-editor" class="tab-pane hidden space-y-6">
+            <!-- Header bar -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900 flex items-center">
+                        <i data-lucide="presentation" class="w-5 h-5 mr-2 text-emerald-600"></i> PPT Slide Studio
+                    </h2>
+                    <p class="text-xs text-slate-500">Design presentation slides visually and download genuine Microsoft PowerPoint (.pptx) files.</p>
+                </div>
+                
+                <div class="flex items-center space-x-3">
+                    <button onclick="addSlide()" class="inline-flex items-center px-4 py-2 text-sm font-semibold rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+                        <i data-lucide="plus" class="w-4 h-4 mr-1.5"></i> Add Slide
+                    </button>
+                    <button onclick="exportPresentation()" class="inline-flex items-center px-5 py-2 text-sm font-semibold rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 shadow-sm transition">
+                        <i data-lucide="download" class="w-4 h-4 mr-2"></i> Download .PPTX
+                    </button>
+                </div>
+            </div>
+
+            <!-- PPT Studio Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Left Sidebar: Slide Thumbs List -->
+                <div class="lg:col-span-3 bg-white p-4 rounded-2xl border border-slate-200 shadow-xs space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Slide Navigator</span>
+                        <span id="slide-count-badge" class="text-xs px-2 py-0.5 rounded-full bg-slate-100 font-semibold text-slate-600">3 Slides</span>
+                    </div>
+                    <div id="slide-thumbs-container" class="space-y-3 max-h-[550px] overflow-y-auto pr-1">
+                        <!-- Rendered dynamically -->
+                    </div>
+                </div>
+
+                <!-- Center: Live Slide Preview & Design Canvas -->
+                <div class="lg:col-span-6 space-y-4">
+                    <div id="slide-canvas-card" class="w-full aspect-video rounded-2xl bg-white border border-slate-200 shadow-xl p-8 flex flex-col justify-between relative overflow-hidden transition-all">
+                        <!-- Theme Banner -->
+                        <div id="slide-preview-header" class="p-4 rounded-xl bg-blue-50 border border-blue-100 mb-4">
+                            <h2 id="preview-title" class="text-2xl font-bold text-blue-600">Enter Slide Title</h2>
+                            <p id="preview-subtitle" class="text-xs text-slate-500 mt-1">Presentation subtitle or presenter name</p>
+                        </div>
+                        
+                        <!-- Slide Bullets -->
+                        <div class="flex-1 space-y-2.5 overflow-hidden">
+                            <ul id="preview-bullets-list" class="space-y-2 text-slate-700 text-base font-medium">
+                                <li class="flex items-start"><span class="text-blue-500 mr-2 font-bold">•</span> Click to add presentation bullet points</li>
+                                <li class="flex items-start"><span class="text-blue-500 mr-2 font-bold">•</span> Customizable themes and direct .pptx export</li>
+                            </ul>
+                        </div>
+
+                        <!-- Footer -->
+                        <div class="pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400">
+                            <span id="preview-theme-label">Theme: Modern Blue</span>
+                            <span id="preview-index-label">Slide 1 of 1</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Sidebar: Slide Editor Form -->
+                <div class="lg:col-span-3 bg-white p-5 rounded-2xl border border-slate-200 shadow-xs space-y-5">
+                    <div>
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-3">Slide Properties</span>
+                        
+                        <!-- Theme Select -->
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Color Theme</label>
+                        <select id="select-theme" onchange="changeTheme(this.value)" class="w-full p-2.5 rounded-lg border border-slate-200 bg-slate-50 text-sm font-medium focus:ring-2 focus:ring-brand-500">
+                            <option value="modern_blue">Modern Blue</option>
+                            <option value="emerald">Emerald Pitch</option>
+                            <option value="purple">Vibrant Purple</option>
+                            <option value="dark">Dark Tech</option>
+                        </select>
+                    </div>
+
+                    <!-- Slide Title Input -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Slide Title</label>
+                        <input type="text" id="input-slide-title" oninput="updateCurrentSlide()" placeholder="e.g. Project Overview" class="w-full p-2.5 rounded-lg border border-slate-200 text-sm font-medium focus:ring-2 focus:ring-brand-500">
+                    </div>
+
+                    <!-- Subtitle Input -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Subtitle / Note</label>
+                        <input type="text" id="input-slide-subtitle" oninput="updateCurrentSlide()" placeholder="e.g. Q3 Results" class="w-full p-2.5 rounded-lg border border-slate-200 text-sm font-medium focus:ring-2 focus:ring-brand-500">
+                    </div>
+
+                    <!-- Bullets List Input -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Bullet Points (One per line)</label>
+                        <textarea id="input-slide-bullets" oninput="updateCurrentSlide()" rows="5" placeholder="Point 1&#10;Point 2&#10;Point 3" class="w-full p-2.5 rounded-lg border border-slate-200 text-sm font-medium focus:ring-2 focus:ring-brand-500"></textarea>
+                    </div>
+
+                    <!-- Delete Slide Button -->
+                    <button onclick="deleteCurrentSlide()" class="w-full py-2 text-xs font-semibold text-rose-600 hover:bg-rose-50 rounded-lg border border-rose-200 transition">
+                        Delete Current Slide
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================================================================== -->
+        <!-- TAB 4: CONVERTERS (PDF to PPT, PPT to PDF) -->
+        <!-- ==================================================================== -->
+        <section id="tab-converters" class="tab-pane hidden space-y-8">
+            <!-- Header -->
+            <div class="text-center max-w-2xl mx-auto space-y-2">
+                <h2 class="text-2xl sm:text-3xl font-bold text-slate-900">Bidirectional Format Converters</h2>
+                <p class="text-sm text-slate-500">Fast, reliable conversion between PDF documents and PowerPoint presentations.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                
+                <!-- Convert Box 1: PDF to PPT -->
+                <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm space-y-5">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center">
+                            <i data-lucide="file-type-2" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900">PDF to PowerPoint (PPTX)</h3>
+                            <p class="text-xs text-slate-500">Extracts text and layouts into editable slides</p>
+                        </div>
+                    </div>
+
+                    <!-- Drag and Drop Zone -->
+                    <div id="dropzone-pdf-to-ppt" class="border-2 border-dashed border-slate-300 rounded-xl p-8 text-center hover:border-brand-500 transition cursor-pointer bg-slate-50/50">
+                        <i data-lucide="upload-cloud" class="w-10 h-10 text-slate-400 mx-auto mb-2"></i>
+                        <p class="text-sm font-semibold text-slate-700">Choose or drop your PDF here</p>
+                        <p class="text-xs text-slate-400 mt-1">Supports all standard PDF documents</p>
+                        <input type="file" id="file-pdf-to-ppt" accept=".pdf" class="hidden">
+                    </div>
+
+                    <div id="status-pdf-to-ppt" class="hidden text-sm font-medium text-slate-600 flex items-center justify-between bg-slate-50 p-3 rounded-lg">
+                        <span id="name-pdf-to-ppt" class="truncate max-w-[200px]">file.pdf</span>
+                        <span class="text-brand-600 text-xs font-bold">Ready</span>
+                    </div>
+
+                    <button onclick="startPdfToPpt()" id="btn-convert-pdf-to-ppt" class="w-full py-3 bg-brand-600 text-white rounded-xl font-semibold shadow-md hover:bg-brand-700 transition flex items-center justify-center">
+                        <i data-lucide="zap" class="w-4 h-4 mr-2"></i> Convert to .PPTX
+                    </button>
+                </div>
+
+                <!-- Convert Box 2: PPT to PDF -->
+                <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm space-y-5">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center">
+                            <i data-lucide="file-output" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900">PowerPoint (PPTX) to PDF</h3>
+                            <p class="text-xs text-slate-500">Export slides into shareable PDF format</p>
+                        </div>
+                    </div>
+
+                    <!-- Drag and Drop Zone -->
+                    <div id="dropzone-ppt-to-pdf" class="border-2 border-dashed border-slate-300 rounded-xl p-8 text-center hover:border-orange-500 transition cursor-pointer bg-slate-50/50">
+                        <i data-lucide="upload-cloud" class="w-10 h-10 text-slate-400 mx-auto mb-2"></i>
+                        <p class="text-sm font-semibold text-slate-700">Choose or drop your PPTX here</p>
+                        <p class="text-xs text-slate-400 mt-1">Supports .pptx and .ppt files</p>
+                        <input type="file" id="file-ppt-to-pdf" accept=".pptx,.ppt" class="hidden">
+                    </div>
+
+                    <div id="status-ppt-to-pdf" class="hidden text-sm font-medium text-slate-600 flex items-center justify-between bg-slate-50 p-3 rounded-lg">
+                        <span id="name-ppt-to-pdf" class="truncate max-w-[200px]">slides.pptx</span>
+                        <span class="text-orange-600 text-xs font-bold">Ready</span>
+                    </div>
+
+                    <button onclick="startPptToPdf()" id="btn-convert-ppt-to-pdf" class="w-full py-3 bg-orange-600 text-white rounded-xl font-semibold shadow-md hover:bg-orange-700 transition flex items-center justify-center">
+                        <i data-lucide="zap" class="w-4 h-4 mr-2"></i> Convert to .PDF
+                    </button>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ==================================================================== -->
+        <!-- TAB 5: PDF UTILITIES (Merge, Split, Image to PDF, Watermark) -->
+        <!-- ==================================================================== -->
+        <section id="tab-pdf-tools" class="tab-pane hidden space-y-8">
+            <div class="text-center max-w-2xl mx-auto space-y-2">
+                <h2 class="text-2xl sm:text-3xl font-bold text-slate-900">PDF Utility Tools</h2>
+                <p class="text-sm text-slate-500">Organize, split, watermark, and compile files effortlessly.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Tool 1: Merge PDF -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-4">
+                    <div class="w-10 h-10 rounded-xl bg-violet-50 text-violet-600 flex items-center justify-center">
+                        <i data-lucide="combine" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="text-base font-bold text-slate-900">Merge Multiple PDFs</h3>
+                    <p class="text-xs text-slate-500">Select 2 or more PDF files to join them in sequential order.</p>
+                    
+                    <input type="file" id="file-merge" multiple accept=".pdf" class="text-xs file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100">
+                    
+                    <button onclick="startMergePdf()" class="w-full py-2.5 bg-violet-600 text-white text-xs font-semibold rounded-xl hover:bg-violet-700 transition flex items-center justify-center">
+                        Merge & Download
+                    </button>
+                </div>
+
+                <!-- Tool 2: Split PDF -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-4">
+                    <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+                        <i data-lucide="scissors" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="text-base font-bold text-slate-900">Split PDF Pages</h3>
+                    <p class="text-xs text-slate-500">Extract pages or ranges (e.g. 1-3, 5) into a new PDF.</p>
+                    
+                    <input type="file" id="file-split" accept=".pdf" class="text-xs file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                    <input type="text" id="split-range" placeholder="Range e.g. 1-2, 4" value="1-1" class="w-full p-2 border border-slate-200 rounded-lg text-xs font-medium">
+                    
+                    <button onclick="startSplitPdf()" class="w-full py-2.5 bg-blue-600 text-white text-xs font-semibold rounded-xl hover:bg-blue-700 transition flex items-center justify-center">
+                        Extract & Download
+                    </button>
+                </div>
+
+                <!-- Tool 3: Images to PDF -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-4">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                        <i data-lucide="image" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="text-base font-bold text-slate-900">Images to PDF</h3>
+                    <p class="text-xs text-slate-500">Convert JPG, PNG, or WebP photos into a unified PDF.</p>
+                    
+                    <input type="file" id="file-images" multiple accept="image/*" class="text-xs file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100">
+                    
+                    <button onclick="startImageToPdf()" class="w-full py-2.5 bg-emerald-600 text-white text-xs font-semibold rounded-xl hover:bg-emerald-700 transition flex items-center justify-center">
+                        Convert Images to PDF
+                    </button>
+                </div>
+
+                <!-- Tool 4: Watermark PDF -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-4">
+                    <div class="w-10 h-10 rounded-xl bg-pink-50 text-pink-600 flex items-center justify-center">
+                        <i data-lucide="stamp" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="text-base font-bold text-slate-900">Stamp Watermark</h3>
+                    <p class="text-xs text-slate-500">Apply a diagonal watermark text stamp on every page.</p>
+                    
+                    <input type="file" id="file-watermark" accept=".pdf" class="text-xs file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-pink-50 file:text-pink-700 hover:file:bg-pink-100">
+                    <input type="text" id="watermark-text" placeholder="Watermark text" value="CONFIDENTIAL" class="w-full p-2 border border-slate-200 rounded-lg text-xs font-medium">
+                    
+                    <button onclick="startWatermarkPdf()" class="w-full py-2.5 bg-pink-600 text-white text-xs font-semibold rounded-xl hover:bg-pink-700 transition flex items-center justify-center">
+                        Add Watermark & Download
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================================================================== -->
+        <!-- TAB 6: UNIVERSAL SEJDA TOOL RUNNER (Dedicated View for All Tools)     -->
+        <!-- ==================================================================== -->
+        <section id="tab-tool-runner" class="tab-pane hidden space-y-6">
+            <!-- Hero Banner matching Sejda Screenshot -->
+            <div class="sejda-runner-hero shadow-xs">
+                <div class="inline-flex p-3 rounded-2xl bg-white/80 text-emerald-700 shadow-xs mb-3" id="tr-icon-container">
+                    <i data-lucide="wrench" class="w-8 h-8" id="tr-icon"></i>
+                </div>
+                <h1 id="tr-title" class="text-3xl sm:text-4xl font-extrabold text-slate-800 tracking-tight">Delete PDF Pages</h1>
+                <p id="tr-subtitle" class="text-sm sm:text-base text-slate-600 mt-2 font-medium max-w-xl mx-auto">
+                    Remove selected pages from your document effortlessly.
+                </p>
+            </div>
+
+            <!-- Upload Area & Tool Work Area -->
+            <div class="bg-white border-2 border-dashed border-slate-300 rounded-2xl p-8 sm:p-12 text-center max-w-2xl mx-auto space-y-6 shadow-xs relative">
+                <!-- File Drop Area -->
+                <div id="tr-dropzone" class="cursor-pointer space-y-4">
+                    <div class="w-16 h-16 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto shadow-inner">
+                        <i data-lucide="file-up" class="w-8 h-8"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-800">Upload document</h3>
+                        <p class="text-xs text-slate-400 mt-1" id="tr-accept-text">Files stay private & encrypted. Supports standard PDFs.</p>
+                    </div>
+                    <label for="tr-file-input" class="cursor-pointer inline-flex items-center px-8 py-3 text-sm font-bold rounded-md bg-emerald-600 hover:bg-emerald-700 text-white shadow-md hover:shadow-lg transition">
+                        <i data-lucide="upload" class="w-4 h-4 mr-2"></i> Choose File
+                    </label>
+                    <input type="file" id="tr-file-input" class="hidden">
+                    <p class="text-xs text-slate-400">or drop files here</p>
+                </div>
+
+                <!-- Selected File Display -->
+                <div id="tr-file-info" class="hidden bg-slate-50 border border-slate-200 rounded-xl p-4 flex items-center justify-between text-left">
+                    <div class="flex items-center space-x-3 overflow-hidden">
+                        <div class="w-10 h-10 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center flex-shrink-0">
+                            <i data-lucide="file-check-2" class="w-5 h-5"></i>
+                        </div>
+                        <div class="truncate">
+                            <p id="tr-file-name" class="text-sm font-bold text-slate-800 truncate">document.pdf</p>
+                            <p id="tr-file-size" class="text-xs text-slate-500">1.2 MB</p>
+                        </div>
+                    </div>
+                    <button onclick="clearSelectedRunnerFile()" class="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg transition" title="Remove file">
+                        <i data-lucide="trash-2" class="w-4 h-4"></i>
+                    </button>
+                </div>
+
+                <!-- Second File for Alternate & Mix -->
+                <div id="tr-second-file-container" class="hidden text-left space-y-2">
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Select Second PDF File:</label>
+                    <input type="file" id="tr-second-file-input" accept=".pdf" class="text-xs file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100">
+                </div>
+
+                <!-- Dynamic Tool Options Panel -->
+                <div id="tr-options-panel" class="text-left space-y-4 pt-2 border-t border-slate-100 hidden">
+                    <!-- Injected dynamically by app.js based on toolId -->
+                </div>
+
+                <!-- Action Button -->
+                <div id="tr-action-container" class="hidden pt-4">
+                    <button id="tr-submit-btn" onclick="executeCurrentToolAction()" class="sejda-apply-btn w-full sm:w-auto px-10">
+                        <span id="tr-submit-text">Process Document</span>
+                        <i data-lucide="arrow-right" class="w-5 h-5 ml-2"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Publish / Share Fill & Sign Modal -->
+        <div id="publish-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center z-50 hidden">
+            <div class="bg-white rounded-xl shadow-2xl max-w-md w-full p-6 space-y-4 border border-slate-200">
+                <div class="flex items-center justify-between border-b pb-3">
+                    <h3 class="text-base font-bold text-slate-800 flex items-center">
+                        <i data-lucide="users" class="w-5 h-5 text-emerald-600 mr-2"></i>
+                        Publish for others to fill & sign
+                    </h3>
+                    <button id="btn-close-publish-modal" class="text-slate-400 hover:text-slate-600">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+                <p class="text-xs text-slate-600">
+                    Share this unique link with recipients to let them fill out and digitally sign this form in their web browser:
+                </p>
+                <div class="flex items-center space-x-2">
+                    <input type="text" id="publish-link-input" readonly value="http://localhost:8000/?mode=fill&doc=active_form" class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded font-mono text-slate-700 select-all">
+                    <button id="btn-copy-publish-link" class="px-3 py-2 bg-emerald-600 text-white rounded text-xs font-bold hover:bg-emerald-700 transition whitespace-nowrap">Copy Link</button>
+                </div>
+                <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-3 text-xs text-emerald-800 space-y-1">
+                    <div class="font-semibold">✓ Interactive Form Ready:</div>
+                    <div class="text-[11px] text-emerald-700">Recipients can fill all text inputs, checkboxes, select dropdowns, and sign directly.</div>
+                </div>
+                <button id="btn-close-publish-done" class="w-full py-2 bg-slate-800 text-white text-xs font-bold rounded-lg hover:bg-slate-900 transition">
+                    Done
+                </button>
+            </div>
+        </div>
+
+        <!-- Auth Modal (Login / Sign Up) -->
+        <div id="auth-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center z-50 hidden p-4">
+            <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden border border-slate-200 transition-all">
+                <!-- Modal Header with Logo & Close -->
+                <div class="p-6 pb-4 flex items-center justify-between border-b border-slate-100">
+                    <div class="flex items-center space-x-2.5">
+                        <div class="sejda-logo-circle">D</div>
+                        <div>
+                            <h3 class="text-base font-bold text-slate-900">DocStudio Account</h3>
+                            <p class="text-xs text-slate-500">Free optional account for tracking document history</p>
+                        </div>
+                    </div>
+                    <button type="button" onclick="closeAuthModal()" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 transition">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+                <!-- Tabs (Log in / Sign up) -->
+                <div class="flex border-b border-slate-200 bg-slate-50 text-sm font-semibold">
+                    <button type="button" id="tab-auth-login" onclick="switchAuthTab('login')" class="flex-1 py-3 text-center border-b-2 border-emerald-600 text-emerald-700 bg-white transition">
+                        Log in
+                    </button>
+                    <button type="button" id="tab-auth-signup" onclick="switchAuthTab('signup')" class="flex-1 py-3 text-center border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition">
+                        Sign up
+                    </button>
+                </div>
+
+                <!-- Error / Success Alert Box -->
+                <div id="auth-alert" class="hidden mx-6 mt-4 p-3 rounded-lg text-xs font-medium"></div>
+
+                <!-- Auth Form -->
+                <form id="auth-form" onsubmit="handleAuthSubmit(event)" class="p-6 space-y-4">
+                    <!-- Name Field (Only visible in Sign up) -->
+                    <div id="auth-field-name" class="hidden space-y-1">
+                        <label class="block text-xs font-semibold text-slate-700">Full Name</label>
+                        <div class="relative">
+                            <i data-lucide="user" class="w-4 h-4 text-slate-400 absolute left-3 top-3"></i>
+                            <input type="text" id="auth-name" placeholder="John Doe" class="w-full pl-9 pr-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:border-emerald-600 focus:bg-white transition">
+                        </div>
+                    </div>
+
+                    <!-- Email Field -->
+                    <div class="space-y-1">
+                        <label class="block text-xs font-semibold text-slate-700">Email Address</label>
+                        <div class="relative">
+                            <i data-lucide="mail" class="w-4 h-4 text-slate-400 absolute left-3 top-3"></i>
+                            <input type="email" id="auth-email" required placeholder="name@example.com" class="w-full pl-9 pr-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:border-emerald-600 focus:bg-white transition">
+                        </div>
+                    </div>
+
+                    <!-- Password Field -->
+                    <div class="space-y-1">
+                        <label class="block text-xs font-semibold text-slate-700">Password</label>
+                        <div class="relative">
+                            <i data-lucide="lock" class="w-4 h-4 text-slate-400 absolute left-3 top-3"></i>
+                            <input type="password" id="auth-password" required placeholder="••••••••" class="w-full pl-9 pr-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:border-emerald-600 focus:bg-white transition">
+                        </div>
+                        <p id="auth-pwd-hint" class="hidden text-[11px] text-slate-400">At least 6 characters</p>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" id="auth-submit-btn" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm rounded-lg shadow-sm transition flex items-center justify-center space-x-2">
+                        <span id="auth-btn-text">Sign in</span>
+                    </button>
+                </form>
+
+                <!-- Footer Switcher & Guest Note -->
+                <div class="bg-slate-50 px-6 py-4 border-t border-slate-100 flex flex-col items-center justify-center space-y-2 text-xs text-slate-500">
+                    <div id="auth-switch-prompt">
+                        Don't have an account? <a href="javascript:void(0)" onclick="switchAuthTab('signup')" class="text-emerald-600 font-bold hover:underline">Sign up for free</a>
+                    </div>
+                    <div class="text-[11px] text-slate-400 text-center">
+                        💡 Tip: You can also use all PDF tools as a guest without an account!
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- User History Modal -->
+        <div id="history-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center z-50 hidden p-4">
+            <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-200">
+                <div class="p-6 pb-4 flex items-center justify-between border-b border-slate-100">
+                    <div class="flex items-center space-x-2.5">
+                        <div class="w-9 h-9 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center">
+                            <i data-lucide="history" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-base font-bold text-slate-900">My Document History</h3>
+                            <p class="text-xs text-slate-500" id="history-user-info">Logged in activity</p>
+                        </div>
+                    </div>
+                    <button type="button" onclick="closeHistoryModal()" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 transition">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+                <div class="p-6 max-h-[60vh] overflow-y-auto" id="history-list-container">
+                    <!-- Dynamic history items loaded here -->
+                    <div class="text-center py-8 text-slate-400 text-sm">Loading history...</div>
+                </div>
+                <div class="bg-slate-50 px-6 py-3 border-t border-slate-100 flex justify-end">
+                    <button type="button" onclick="closeHistoryModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 text-xs font-semibold rounded-lg transition">Close</button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-6 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 space-y-2 sm:space-y-0">
+            <div>
+                <strong>DocStudio</strong> &copy; 2026. All-in-One PDF & PPT Suite. Built for VS Code, GitHub & Render.
+            </div>
+            <div class="flex items-center space-x-4 font-medium">
+                <span>FastAPI + PyMuPDF</span>
+                <span>•</span>
+                <span>python-pptx</span>
+                <span>•</span>
+                <span>PDF.js Engine</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- App Scripts -->
+    <script src="/static/js/app.js?v=15"></script>
+    <script src="/static/js/pdf_editor.js?v=15"></script>
+    <script src="/static/js/ppt_editor.js?v=10"></script>
+    <script>
+        // Initialize Lucide icons on page load
+        lucide.createIcons();
+    </script>
+</body>
+</html>

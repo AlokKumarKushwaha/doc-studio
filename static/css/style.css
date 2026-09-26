@@ -1,0 +1,1854 @@
+/* DocStudio Custom UI Styles */
+
+/* Navigation buttons */
+.nav-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 0.85rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #475569;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.nav-btn:hover {
+    color: #0f172a;
+    background-color: #f1f5f9;
+}
+
+.nav-btn.active {
+    color: #4f46e5;
+    background-color: #eef2ff;
+    font-weight: 600;
+}
+
+/* Tool buttons for PDF toolbar */
+.tool-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 0.5rem;
+    color: #475569;
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    transition: all 0.15s ease-in-out;
+}
+
+.tool-btn:hover {
+    background-color: #e2e8f0;
+    color: #0f172a;
+}
+
+.tool-btn.active {
+    background-color: #4f46e5;
+    color: #ffffff;
+    border-color: #4338ca;
+}
+
+/* Slide Thumbnail Card */
+.slide-thumb {
+    cursor: pointer;
+    border-radius: 0.75rem;
+    padding: 0.75rem;
+    border: 2px solid #e2e8f0;
+    background: #ffffff;
+    transition: all 0.2s ease;
+}
+
+.slide-thumb:hover {
+    border-color: #cbd5e1;
+    transform: translateY(-1px);
+}
+
+.slide-thumb.active {
+    border-color: #10b981;
+    background-color: #f0fdf4;
+    box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.1);
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: #f8fafc;
+}
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Glassmorphism toast */
+.toast-msg {
+    animation: slideInUp 0.25s ease-out forwards;
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Sejda-Style PDF Editor Styles */
+.sejda-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.4rem 0.75rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: #334155;
+    background-color: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    transition: all 0.15s ease-in-out;
+    cursor: pointer;
+    user-select: none;
+}
+
+.sejda-btn:hover {
+    background-color: #f8fafc;
+    border-color: #94a3b8;
+    color: #0f172a;
+}
+
+.sejda-btn.active {
+    background-color: #e0e7ff;
+    border-color: #6366f1;
+    color: #4338ca;
+}
+
+/* Interactive Text Line Layer */
+.pdf-text-line {
+    position: absolute;
+    border: 1px dashed transparent;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background-color 0.12s, border-color 0.12s;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    background-color: transparent;
+}
+
+.pdf-text-line:hover {
+    background-color: rgba(2, 132, 199, 0.08) !important;
+    border-color: #0284c7 !important;
+    z-index: 10;
+}
+
+/* Hide overlay text completely so it NEVER duplicates or blurs the crisp PDF canvas text */
+.pdf-line-content {
+    color: transparent !important;
+    opacity: 0 !important;
+    pointer-events: none;
+    user-select: none;
+}
+
+.pdf-line-actions {
+    position: absolute;
+    top: -26px;
+    right: 0;
+    display: none;
+    align-items: center;
+    background: #1e293b;
+    border-radius: 6px;
+    padding: 2px 4px;
+    gap: 4px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+    z-index: 25;
+}
+
+.pdf-text-line:hover .pdf-line-actions {
+    display: flex;
+}
+
+.pdf-line-action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    color: #f8fafc;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.15s;
+}
+
+.pdf-line-action-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.pdf-line-action-btn.delete:hover {
+    background: #ef4444;
+}
+
+/* Redacted / Deleted Lines */
+.pdf-deleted-whiteout {
+    position: absolute;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 1px #e2e8f0;
+    z-index: 15;
+    pointer-events: auto;
+}
+
+/* Inline Edited Line */
+.pdf-edited-line {
+    position: absolute;
+    background-color: #ffffff;
+    color: #0f172a;
+    font-family: inherit;
+    font-weight: 500;
+    z-index: 16;
+    padding: 0 2px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 0 0 1px #818cf8;
+}
+
+/* Draggable & Resizable Image Container */
+.pdf-image-container {
+    position: absolute;
+    cursor: move;
+    border: 2px dashed #3b82f6;
+    background-color: rgba(59, 130, 246, 0.05);
+    z-index: 20;
+    user-select: none;
+}
+
+.pdf-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    display: block;
+    pointer-events: none;
+}
+
+.pdf-image-del-btn {
+    position: absolute;
+    top: -12px;
+    right: -12px;
+    width: 24px;
+    height: 24px;
+    background: #ef4444;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid white;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.pdf-image-resize-handle {
+    position: absolute;
+    bottom: -6px;
+    right: -6px;
+    width: 12px;
+    height: 12px;
+    background: #3b82f6;
+    border: 2px solid white;
+    border-radius: 2px;
+    cursor: se-resize;
+}
+
+/* Whiteout tool item */
+.pdf-whiteout-item {
+    position: absolute;
+    background-color: #ffffff;
+    border: 1px dashed #cbd5e1;
+    z-index: 14;
+    cursor: pointer;
+}
+
+.pdf-whiteout-item:hover {
+    border-color: #ef4444;
+}
+
+.pdf-whiteout-preview {
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.85);
+    border: 2px dashed #94a3b8;
+    z-index: 30;
+    pointer-events: none;
+}
+
+/* Exact Sejda UI Format */
+.sejda-top-notice {
+    background-color: #fcfcfc;
+    border-bottom: 1px solid #f1f5f9;
+    color: #64748b;
+    font-size: 12px;
+    padding: 6px 0;
+    text-align: center;
+}
+
+.sejda-header-nav {
+    background-color: #ffffff;
+    border-bottom: 1px solid #e2e8f0;
+    height: 62px;
+}
+
+.sejda-logo-circle {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background-color: #10b981;
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sejda-nav-link {
+    font-size: 14px;
+    font-weight: 500;
+    color: #374151;
+    padding: 6px 10px;
+    border-radius: 4px;
+    transition: color 0.15s;
+    display: inline-flex;
+    align-items: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.sejda-nav-link:hover {
+    color: #111827;
+}
+
+.sejda-nav-link.active {
+    font-weight: 700;
+    color: #111827;
+}
+
+/* Floating Light-Blue Segmented Toolbar */
+.sejda-toolbar-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.sejda-segmented-bar {
+    border: 1px solid #38bdf8;
+    background-color: #ffffff;
+    border-radius: 5px;
+    display: inline-flex;
+    align-items: stretch;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+    overflow: visible;
+}
+
+.sejda-bar-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 7px 14px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #0284c7;
+    border-right: 1px solid #e0f2fe;
+    background-color: #ffffff;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.12s, color 0.12s;
+    border-top: none;
+    border-bottom: none;
+    border-left: none;
+}
+
+.sejda-bar-btn:last-child {
+    border-right: none;
+}
+
+.sejda-bar-btn:hover {
+    background-color: #f0f9ff;
+    color: #0369a1;
+}
+
+.sejda-bar-btn.active {
+    background-color: #e0f2fe;
+    color: #0284c7;
+    font-weight: 600;
+}
+
+/* Page Control Bar */
+.sejda-page-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 4px 0 14px;
+}
+
+.sejda-page-num-pill {
+    font-size: 15px;
+    font-weight: 700;
+    color: #0284c7;
+    min-width: 20px;
+    text-align: center;
+}
+
+.sejda-action-pill-group {
+    border: 1px solid #38bdf8;
+    background-color: #ffffff;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    overflow: hidden;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.sejda-pill-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 28px;
+    color: #0284c7;
+    border-right: 1px solid #e0f2fe;
+    background-color: #ffffff;
+    cursor: pointer;
+    transition: background-color 0.12s;
+    border-top: none;
+    border-bottom: none;
+    border-left: none;
+}
+
+.sejda-pill-action:last-child {
+    border-right: none;
+}
+
+.sejda-pill-action:hover {
+    background-color: #f0f9ff;
+}
+
+.sejda-insert-btn {
+    border: 1px solid #38bdf8;
+    color: #0284c7;
+    background-color: #ffffff;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 4px 12px;
+    height: 28px;
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    transition: background-color 0.12s;
+}
+
+.sejda-insert-btn:hover {
+    background-color: #f0f9ff;
+}
+
+/* Green Apply Changes Button */
+.sejda-apply-btn {
+    background-color: #10b981;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 16px;
+    padding: 12px 32px;
+    border-radius: 6px;
+    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    border: none;
+    transition: all 0.15s ease-in-out;
+}
+
+.sejda-apply-btn:hover {
+    background-color: #059669;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(16, 185, 129, 0.45);
+}
+
+/* ============================================================= */
+/* Sejda Floating Mini-Formatting Toolbar & "Type your text" Box */
+/* ============================================================= */
+.sejda-floating-toolbar {
+    position: absolute;
+    display: inline-flex;
+    align-items: stretch;
+    background: #ffffff;
+    border: 1px solid #38bdf8;
+    border-radius: 4px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+    z-index: 60;
+    user-select: none;
+    height: 30px;
+    white-space: nowrap;
+}
+
+.sejda-tb-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    border: none;
+    border-right: 1px solid #e0f2fe;
+    color: #0284c7;
+    padding: 0 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1;
+    transition: background-color 0.1s, color 0.1s;
+    user-select: none;
+}
+
+.sejda-tb-btn:last-child {
+    border-right: none;
+}
+
+.sejda-tb-btn:hover {
+    background-color: #f0f9ff;
+    color: #0369a1;
+}
+
+.sejda-tb-btn.active {
+    background-color: #e0f2fe;
+    color: #0284c7;
+    font-weight: 700;
+}
+
+.sejda-tb-btn-bold {
+    font-family: Georgia, serif;
+    font-weight: 800;
+    font-size: 14px;
+}
+
+.sejda-tb-btn-italic {
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.sejda-tb-btn-trash:hover {
+    background-color: #fee2e2;
+    color: #ef4444;
+}
+
+.sejda-tb-btn-move {
+    cursor: move !important;
+}
+
+/* Dropdown popovers for Size, Font, Color */
+.sejda-dropdown-menu {
+    position: absolute;
+    top: 34px;
+    left: 0;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.14);
+    z-index: 70;
+    padding: 4px;
+    display: none;
+    flex-direction: column;
+    min-width: 110px;
+}
+
+.sejda-dropdown-menu.show {
+    display: flex;
+}
+
+.sejda-dropdown-item {
+    padding: 6px 10px;
+    font-size: 12px;
+    color: #334155;
+    background: transparent;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.1s;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.sejda-dropdown-item:hover {
+    background: #f1f5f9;
+    color: #0284c7;
+}
+
+.sejda-color-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 5px;
+    padding: 6px;
+    width: 140px;
+}
+
+.sejda-color-swatch {
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+    border: 1px solid #cbd5e1;
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+.sejda-color-swatch:hover {
+    transform: scale(1.15);
+}
+
+/* Added Text Item on Canvas */
+.sejda-text-item {
+    position: absolute;
+    z-index: 40;
+    min-width: 40px;
+    cursor: text;
+    user-select: none;
+    box-sizing: border-box;
+    display: inline-block;
+    padding: 1px 3px;
+    border-radius: 2px;
+}
+
+.sejda-text-item.active {
+    outline: 1px dashed #38bdf8;
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+.sejda-text-editable {
+    outline: none;
+    border: none;
+    background: transparent;
+    word-break: break-word;
+    white-space: pre-wrap;
+    line-height: 1.25;
+    display: inline-block;
+    min-width: 20px;
+}
+
+.sejda-text-editable::selection {
+    background-color: #2563eb;
+    color: #ffffff;
+}
+
+/* Blue selection replica when initially created or selected */
+.sejda-text-item.is-initial-select .sejda-text-editable {
+    background-color: #2563eb !important;
+    color: #ffffff !important;
+    border-radius: 2px;
+}
+
+/* ============================================================= */
+/* Forms Dropdown Menu & Form Field Components (Exact Sejda)     */
+/* ============================================================= */
+.sejda-forms-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 6px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    box-shadow: 0 12px 28px -4px rgba(0, 0, 0, 0.18), 0 8px 10px -6px rgba(0, 0, 0, 0.08);
+    width: 330px;
+    padding: 6px 0;
+    z-index: 100;
+}
+
+.sejda-form-section-hdr {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #64748b;
+    padding: 6px 14px;
+    background: #f8fafc;
+    border-top: 1px solid #f1f5f9;
+    border-bottom: 1px solid #f1f5f9;
+    margin: 4px 0;
+}
+
+.sejda-form-section-hdr:first-child {
+    border-top: none;
+    margin-top: 0;
+}
+
+.sejda-symbol-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 14px;
+}
+
+.sejda-symbol-btn {
+    width: 38px;
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #cbd5e1;
+    border-radius: 5px;
+    background: #ffffff;
+    color: #1e293b;
+    cursor: pointer;
+    transition: all 0.15s ease-in-out;
+}
+
+.sejda-symbol-btn:hover, .sejda-symbol-btn.active {
+    border-color: #38bdf8;
+    background: #f0f9ff;
+    color: #0284c7;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(2, 132, 199, 0.15);
+}
+
+.sejda-fields-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    padding: 4px 12px;
+}
+
+.sejda-field-item-btn {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 6px 8px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #334155;
+    border-radius: 4px;
+    border: 1px solid transparent;
+    background: transparent;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.12s;
+}
+
+.sejda-field-item-btn:hover, .sejda-field-item-btn.active {
+    background: #f0f9ff;
+    border-color: #bae6fd;
+    color: #0284c7;
+}
+
+.sejda-field-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 11px;
+    min-width: 22px;
+    margin-right: 6px;
+    color: #0284c7;
+}
+
+.sejda-field-action-btn {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 7px 12px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #334155;
+    border: none;
+    border-radius: 4px;
+    background: transparent;
+    cursor: pointer;
+    text-align: left;
+    transition: background-color 0.12s, color 0.12s;
+}
+
+.sejda-field-action-btn:hover {
+    background: #f1f5f9;
+    color: #0284c7;
+}
+
+/* Placed Symbol on PDF Canvas */
+.pdf-symbol-item {
+    position: absolute;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: move;
+    user-select: none;
+    z-index: 35;
+    line-height: 1;
+}
+
+.pdf-symbol-item:hover {
+    outline: 1px dashed #38bdf8;
+    background-color: rgba(56, 189, 248, 0.08);
+}
+
+.pdf-symbol-del-btn {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 18px;
+    height: 18px;
+    background: #ef4444;
+    color: #ffffff;
+    border-radius: 50%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    cursor: pointer;
+    z-index: 40;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.pdf-symbol-item:hover .pdf-symbol-del-btn {
+    display: flex;
+}
+
+/* Placed Form Fields on Canvas */
+.pdf-form-field-container {
+    position: absolute;
+    z-index: 35;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+}
+
+.pdf-form-field-container.edit-mode {
+    border: 1.5px dashed #38bdf8;
+    background-color: rgba(56, 189, 248, 0.05);
+    cursor: move;
+}
+
+.pdf-form-field-container.edit-mode .pdf-form-field-input,
+.pdf-form-field-container.edit-mode .pdf-form-field-textarea,
+.pdf-form-field-container.edit-mode .pdf-form-field-select,
+.pdf-form-field-container.edit-mode .pdf-form-field-checkbox,
+.pdf-form-field-container.edit-mode .pdf-form-field-radio {
+    pointer-events: none;
+}
+
+.pdf-form-field-input {
+    width: 100%;
+    height: 100%;
+    padding: 2px 6px;
+    font-size: 12px;
+    border: 1px solid #94a3b8;
+    background-color: rgba(239, 246, 255, 0.6);
+    color: #0f172a;
+    border-radius: 2px;
+    outline: none;
+}
+
+.pdf-form-field-input:focus {
+    border-color: #3b82f6;
+    background-color: #ffffff;
+}
+
+.pdf-form-field-textarea {
+    width: 100%;
+    height: 100%;
+    padding: 4px 6px;
+    font-size: 12px;
+    border: 1px solid #94a3b8;
+    background-color: rgba(239, 246, 255, 0.6);
+    color: #0f172a;
+    border-radius: 2px;
+    resize: none;
+    outline: none;
+}
+
+.pdf-form-field-textarea:focus {
+    border-color: #3b82f6;
+    background-color: #ffffff;
+}
+
+.pdf-form-field-select {
+    width: 100%;
+    height: 100%;
+    padding: 2px 4px;
+    font-size: 12px;
+    border: 1px solid #94a3b8;
+    background-color: rgba(239, 246, 255, 0.6);
+    color: #0f172a;
+    border-radius: 2px;
+    outline: none;
+}
+
+.pdf-form-field-checkbox {
+    width: 18px;
+    height: 18px;
+    accent-color: #2563eb;
+    cursor: pointer;
+}
+
+.pdf-form-field-radio {
+    width: 18px;
+    height: 18px;
+    accent-color: #2563eb;
+    cursor: pointer;
+}
+
+.pdf-form-field-signature {
+    width: 100%;
+    height: 100%;
+    border: 1px dashed #64748b;
+    background-color: rgba(248, 250, 252, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #475569;
+    cursor: pointer;
+    border-radius: 3px;
+    user-select: none;
+}
+
+.pdf-form-field-signature:hover {
+    border-color: #2563eb;
+    color: #2563eb;
+    background-color: #eff6ff;
+}
+
+.pdf-field-tab-badge {
+    position: absolute;
+    top: -12px;
+    left: -8px;
+    background: #f97316;
+    color: #ffffff;
+    font-size: 9px;
+    font-weight: 800;
+    border-radius: 10px;
+    padding: 1px 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+    z-index: 45;
+    pointer-events: none;
+    line-height: 1.2;
+}
+
+.pdf-field-del-btn {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 18px;
+    height: 18px;
+    background: #ef4444;
+    color: #ffffff;
+    border-radius: 50%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    cursor: pointer;
+    z-index: 45;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.pdf-form-field-container.edit-mode .pdf-field-del-btn {
+    display: flex;
+}
+
+/* ============================================================= */
+/* Annotate Dropdown & Text Annotations (Exact Sejda Replica)     */
+/* ============================================================= */
+.sejda-annotate-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 6px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    box-shadow: 0 12px 28px -4px rgba(0, 0, 0, 0.18), 0 8px 10px -6px rgba(0, 0, 0, 0.08);
+    width: 270px;
+    padding: 6px 0;
+    z-index: 100;
+}
+
+.sejda-annotate-action-item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 8px 14px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #334155;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    transition: background-color 0.12s, color 0.12s;
+}
+
+.sejda-annotate-action-item:hover {
+    background: #f1f5f9;
+    color: #0284c7;
+}
+
+.sejda-annotate-row-btn {
+    display: inline-flex;
+    align-items: center;
+    background: transparent;
+    border: none;
+    font-size: 12px;
+    font-weight: 500;
+    color: #334155;
+    cursor: pointer;
+    padding: 2px 4px;
+    border-radius: 3px;
+    transition: color 0.1s;
+}
+
+.sejda-annotate-row-btn:hover {
+    color: #0284c7;
+}
+
+.sejda-color-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 1.5px solid #cbd5e1;
+    cursor: pointer;
+    transition: transform 0.12s, border-color 0.12s;
+    outline: none;
+    display: inline-block;
+}
+
+.sejda-color-dot:hover, .sejda-color-dot.active {
+    transform: scale(1.35);
+    border-color: #0284c7;
+    box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.25);
+}
+
+/* Placed Text Annotations on Canvas */
+.pdf-text-annotation {
+    position: absolute;
+    z-index: 25;
+    pointer-events: auto;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+.pdf-text-annotation:hover {
+    outline: 1px dashed #38bdf8;
+}
+
+.pdf-annot-del-btn {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 16px;
+    height: 16px;
+    background: #ef4444;
+    color: #ffffff;
+    border-radius: 50%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    cursor: pointer;
+    z-index: 45;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.pdf-text-annotation:hover .pdf-annot-del-btn {
+    display: flex;
+}
+
+/* ============================================================= */
+/* Shapes Dropdown & Placed Vector Shapes (Exact Sejda Replica)  */
+/* ============================================================= */
+.sejda-shapes-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 6px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    box-shadow: 0 12px 28px -4px rgba(0, 0, 0, 0.18), 0 8px 10px -6px rgba(0, 0, 0, 0.08);
+    width: 160px;
+    padding: 4px;
+    z-index: 100;
+}
+
+.sejda-shape-item-btn {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 7px 10px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #334155;
+    background: transparent;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: left;
+    transition: background-color 0.12s, color 0.12s;
+}
+
+.sejda-shape-item-btn:hover {
+    background: #f1f5f9;
+    color: #0284c7;
+}
+
+/* Placed Shape on Canvas */
+.pdf-shape-item {
+    position: absolute;
+    z-index: 26;
+    cursor: move;
+    user-select: none;
+    pointer-events: auto;
+    box-sizing: border-box;
+}
+
+.pdf-shape-item svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+    overflow: visible;
+}
+
+.pdf-shape-item:hover {
+    outline: 1px dashed #38bdf8;
+    background-color: rgba(56, 189, 248, 0.04);
+}
+
+.pdf-shape-del-btn {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 18px;
+    height: 18px;
+    background: #ef4444;
+    color: #ffffff;
+    border-radius: 50%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    cursor: pointer;
+    z-index: 45;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.pdf-shape-item:hover .pdf-shape-del-btn {
+    display: flex;
+}
+
+/* ============================================================= */
+/* All Tools Mega Menu Overlay (Exact Sejda Replica)            */
+/* ============================================================= */
+.sejda-megamenu-overlay {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: #ffffff;
+    box-shadow: 0 20px 40px -8px rgba(0, 0, 0, 0.18), 0 1px 3px rgba(0, 0, 0, 0.05);
+    border-top: 1px solid #e2e8f0;
+    border-bottom: 2px solid #cbd5e1;
+    z-index: 999;
+    max-height: calc(100vh - 70px);
+    overflow-y: auto;
+    padding: 24px 36px 36px 36px;
+    animation: sejdaFadeIn 0.15s ease-out;
+}
+
+@keyframes sejdaFadeIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.sejda-megamenu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 24px 28px;
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.sejda-megamenu-col {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.sejda-megamenu-section {
+    margin-bottom: 12px;
+}
+
+.sejda-megamenu-hdr {
+    font-size: 11px;
+    font-weight: 700;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.sejda-megamenu-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 8px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #334155;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.12s ease-in-out;
+    width: 100%;
+}
+
+.sejda-megamenu-item:hover {
+    background: #f1f5f9;
+    color: #0284c7;
+    transform: translateX(2px);
+}
+
+.sejda-megamenu-item .tool-icon {
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.sejda-badge-new {
+    font-size: 9px;
+    font-weight: 700;
+    color: #059669;
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    padding: 1px 4px;
+    border-radius: 4px;
+    margin-left: auto;
+    letter-spacing: 0.02em;
+}
+
+/* Tool Runner Dedicated View */
+.sejda-runner-hero {
+    background: linear-gradient(180deg, #d1fae5 0%, #ecfdf5 100%);
+    border-bottom: 1px solid #a7f3d0;
+    padding: 36px 20px;
+    text-align: center;
+    border-radius: 12px;
+}
+
+/* Sejda Compress PDF Controls Matching User Screenshot */
+.sejda-compress-container {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.sejda-compress-group-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.sejda-segmented-group {
+    display: inline-flex;
+    background-color: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    position: relative;
+    padding: 0;
+}
+
+.sejda-segmented-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 14px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #475569;
+    background: transparent;
+    border: none;
+    border-right: 1px solid #e2e8f0;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    outline: none;
+    position: relative;
+    user-select: none;
+}
+
+.sejda-segmented-btn:last-child {
+    border-right: none;
+}
+
+.sejda-segmented-btn:hover {
+    background-color: #f8fafc;
+    color: #0f172a;
+}
+
+.sejda-segmented-btn.active {
+    box-shadow: inset 0 0 0 1.5px #20c997, 0 0 0 1px #20c997;
+    border-radius: 5px;
+    color: #0f172a;
+    font-weight: 600;
+    background-color: #ffffff;
+    z-index: 2;
+}
+
+.sejda-help-circle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 1px solid #94a3b8;
+    font-size: 10px;
+    line-height: 1;
+    color: #64748b;
+    margin-left: 5px;
+    font-weight: 600;
+    cursor: help;
+}
+
+.sejda-help-circle:hover {
+    border-color: #20c997;
+    color: #20c997;
+}
+
+.sejda-badge-experimental {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 7px;
+    border-radius: 4px;
+    background-color: #fef3c7;
+    color: #b45309;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+.sejda-btn-compress-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #10b981;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 10px 24px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(16, 185, 129, 0.25);
+    transition: all 0.15s ease;
+}
+
+.sejda-btn-compress-action:hover {
+    background-color: #059669;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(16, 185, 129, 0.3);
+}
+
+.sejda-btn-more-options {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e6f9f4;
+    color: #0d9488;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.sejda-btn-more-options:hover {
+    background-color: #ccfbf1;
+    color: #0f766e;
+}
+
+/* Sejda Crop PDF Options UI Matching User Screenshot */
+.sejda-crop-container {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.sejda-crop-card {
+    background-color: #ffffff;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 10px;
+    padding: 24px 16px;
+    min-height: 190px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.sejda-crop-card:hover {
+    border-color: #20c997;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(32, 201, 151, 0.12);
+}
+
+.sejda-crop-card.active {
+    border-color: #20c997 !important;
+    background-color: #eefbf7 !important;
+    box-shadow: 0 0 0 1px #20c997, 0 6px 16px rgba(32, 201, 151, 0.16);
+}
+
+.sejda-crop-icon {
+    color: #20c997;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sejda-crop-desc {
+    font-size: 13px;
+    font-weight: 500;
+    color: #334155;
+    line-height: 1.4;
+    margin-bottom: 16px;
+    min-height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sejda-crop-action {
+    font-size: 13px;
+    font-weight: 700;
+    color: #059669;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.sejda-btn-crop-continue {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #10b981;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 10px 32px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(16, 185, 129, 0.25);
+    transition: all 0.15s ease;
+}
+
+.sejda-btn-crop-continue:hover {
+    background-color: #059669;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(16, 185, 129, 0.3);
+}
+
+/* Sejda Visual Interactive Crop Editor (media_1790308406873.png) */
+.crop-visual-container {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.crop-measure-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 16px 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    margin-bottom: 20px;
+}
+
+.crop-measure-grid {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    gap: 10px 18px;
+    align-items: center;
+}
+
+.crop-measure-field {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.crop-measure-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #475569;
+    min-width: 50px;
+    text-align: right;
+}
+
+.crop-measure-input {
+    width: 72px;
+    padding: 5px 8px;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    background: #ffffff;
+    color: #1e293b;
+    transition: border-color 0.15s ease;
+}
+
+.crop-measure-input:focus {
+    outline: none;
+    border-color: #20c997;
+    box-shadow: 0 0 0 2px rgba(32, 201, 151, 0.2);
+}
+
+.crop-measure-side {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+}
+
+.crop-btn-autocrop {
+    color: #059669;
+    font-size: 13px;
+    font-weight: 600;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+.crop-btn-autocrop:hover {
+    color: #047857;
+    text-decoration: underline;
+}
+
+.crop-stage-wrapper {
+    position: relative;
+    display: inline-block;
+    margin: 0 auto;
+    background: #ffffff;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+    border: 1px solid #cbd5e1;
+    overflow: hidden;
+    user-select: none;
+    cursor: crosshair;
+}
+
+#crop-stage-canvas {
+    display: block;
+}
+
+/* Crop Selection Rectangle */
+#crop-rect-box {
+    position: absolute;
+    border: 1.5px dashed #0284c7;
+    cursor: move;
+    box-sizing: border-box;
+    z-index: 30;
+    background: rgba(14, 165, 233, 0.04);
+}
+
+/* Crop Dim Overlays */
+.crop-dim {
+    position: absolute;
+    background: rgba(15, 23, 42, 0.45);
+    pointer-events: none;
+    z-index: 20;
+}
+
+/* Crop Border Edges (Easy click-and-drag for each side) */
+.crop-edge {
+    position: absolute;
+    z-index: 33;
+}
+.crop-edge.edge-t {
+    top: -6px;
+    left: 8px;
+    right: 8px;
+    height: 12px;
+    cursor: ns-resize;
+}
+.crop-edge.edge-b {
+    bottom: -6px;
+    left: 8px;
+    right: 8px;
+    height: 12px;
+    cursor: ns-resize;
+}
+.crop-edge.edge-l {
+    top: 8px;
+    bottom: 8px;
+    left: -6px;
+    width: 12px;
+    cursor: ew-resize;
+}
+.crop-edge.edge-r {
+    top: 8px;
+    bottom: 8px;
+    right: -6px;
+    width: 12px;
+    cursor: ew-resize;
+}
+
+/* Crop Handles (12x12 with clear high-visibility border) */
+.crop-handle {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: #ffffff;
+    border: 2px solid #0284c7;
+    box-sizing: border-box;
+    border-radius: 2px;
+    z-index: 36;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+.crop-handle.handle-nw { top: -6px; left: -6px; cursor: nwse-resize; }
+.crop-handle.handle-ne { top: -6px; right: -6px; cursor: nesw-resize; }
+.crop-handle.handle-sw { bottom: -6px; left: -6px; cursor: nesw-resize; }
+.crop-handle.handle-se { bottom: -6px; right: -6px; cursor: nwse-resize; }
+.crop-handle.handle-n { top: -6px; left: 50%; transform: translateX(-50%); cursor: ns-resize; }
+.crop-handle.handle-s { bottom: -6px; left: 50%; transform: translateX(-50%); cursor: ns-resize; }
+.crop-handle.handle-w { top: 50%; left: -6px; transform: translateY(-50%); cursor: ew-resize; }
+.crop-handle.handle-e { top: 50%; right: -6px; transform: translateY(-50%); cursor: ew-resize; }
+
+.crop-sticky-bar {
+    background: #fff7ed;
+    border-top: 1px solid #fed7aa;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0 0 12px 12px;
+    margin-top: 24px;
+}
+
+.crop-page-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    font-size: 13px;
+    color: #475569;
+    margin-top: 12px;
+}
+
+.crop-page-nav-btn {
+    padding: 4px 10px;
+    border: 1px solid #cbd5e1;
+    background: #ffffff;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #334155;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.crop-page-nav-btn:hover {
+    background: #f1f5f9;
+    border-color: #94a3b8;
+}
+
+/* User Profile Header Badge & Dropdown */
+.user-avatar-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 10px;
+    background: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    border-radius: 9999px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.user-avatar-badge:hover {
+    background: #e2e8f0;
+    border-color: #94a3b8;
+}
+
+.user-avatar-circle {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: #10b981;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-transform: uppercase;
+}
+
+.user-profile-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    width: 220px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+    z-index: 50;
+    overflow: hidden;
+    animation: fadeInMenu 0.15s ease-out;
+}
+
+@keyframes fadeInMenu {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.user-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #334155;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.15s ease;
+}
+
+.user-menu-item:hover {
+    background: #f8fafc;
+    color: #0f172a;
+}
+
+.user-menu-item.logout {
+    color: #ef4444;
+}
+
+.user-menu-item.logout:hover {
+    background: #fef2f2;
+}
+
+/* History List Item */
+.history-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 14px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    background: #ffffff;
+    transition: all 0.2s ease;
+}
+
+.history-item:hover {
+    border-color: #cbd5e1;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+/* Govt Form & Exam Document Prompt Assistant */
+.govt-assistant-box {
+    background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 50%, #f0f9ff 100%);
+    border: 1.5px solid #a7f3d0;
+    border-radius: 12px;
+    padding: 16px 20px;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.08);
+    transition: all 0.2s ease;
+}
+
+.govt-assistant-box:focus-within {
+    border-color: #34d399;
+    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.15);
+}
+
+.govt-preset-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 20px;
+    color: #334155;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.govt-preset-chip:hover {
+    background: #f8fafc;
+    border-color: #10b981;
+    color: #059669;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(16, 185, 129, 0.15);
+}
+
+.govt-preset-chip.active {
+    background: #ecfdf5;
+    border-color: #059669;
+    color: #047857;
+    font-weight: 700;
+}
+
+.crop-kb-badge {
+    background: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fde68a;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 9999px;
+}
